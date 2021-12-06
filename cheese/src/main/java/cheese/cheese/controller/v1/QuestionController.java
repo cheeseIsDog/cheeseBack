@@ -15,14 +15,4 @@ import org.springframework.web.bind.annotation.RestController;
 public class QuestionController {
     private final ResponseService responseService;
 
-//    @ApiOperation(value = "login", notes = "로그인")
-//    @ApiResponses({
-//            @ApiResponse(code = 200, message = "OK !!"),
-//            @ApiResponse(code = 500, message = "Internal Server Error !!"),
-//            @ApiResponse(code = 404, message = "Not Found !!")
-//    })
-//    @PostMapping("/getQuestionList")
-//    public CommonResult login(@RequestBody UserDto.loginReq login)throws Exception {
-//        return responseService.getSingleResult();
-//    }
 }

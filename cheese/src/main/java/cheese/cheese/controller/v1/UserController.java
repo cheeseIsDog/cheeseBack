@@ -4,10 +4,9 @@ import cheese.cheese.ResultForm.CommonResult;
 import cheese.cheese.dto.UserDto;
 import cheese.cheese.service.ResponseService;
 import cheese.cheese.service.UserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -21,22 +20,22 @@ public class UserController {
     private final ResponseService responseService;
     private final UserService userService;
 
-    @ApiOperation(value = "signIn", notes = "로그인")
+    @Operation(summary = "signIn", description = "로그인")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK !!"),
-            @ApiResponse(code = 500, message = "Internal Server Error !!"),
-            @ApiResponse(code = 404, message = "Not Found !!")
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
+            @ApiResponse(responseCode = "404", description = "Not Found !!")
     })
     @PostMapping("/signIn")
     public CommonResult signIn(@RequestBody UserDto.loginReq login)throws Exception {
         return responseService.getSingleResult(userService.signIn(login));
     }
 
-    @ApiOperation(value = "signUp", notes = "회원가")
+    @Operation(summary = "signUp", description = "회원가")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "OK !!"),
-            @ApiResponse(code = 500, message = "Internal Server Error !!"),
-            @ApiResponse(code = 404, message = "Not Found !!")
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
+            @ApiResponse(responseCode = "404", description = "Not Found !!")
     })
     @PostMapping("/signUp")
     public CommonResult signUp(@RequestBody UserDto.SignUpReq dto ) {
