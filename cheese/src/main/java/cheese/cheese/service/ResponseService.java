@@ -31,6 +31,16 @@ public class ResponseService {
         return result;
     }
 
+    public <T> SingleResult<T> getBooleanResult(Boolean data) {
+        SingleResult<T> result = new SingleResult<>();
+        if(data) {
+            this.setFailResult(result);
+        } else {
+            this.setSuccessResult(result);
+        }
+        return result;
+    }
+
     public <T> ListResult<T> getListResult(List<T> data) {
         ListResult<T> result = new ListResult<>();
         result.setList(data);
@@ -38,7 +48,7 @@ public class ResponseService {
         return result;
     }
 
-    private CommonResult getFailResult() {
+    public CommonResult getFailResult() {
         CommonResult result = new CommonResult();
         result.setSuccess(false);
         result.setCode(CommonResponse.FAIL.getCode());

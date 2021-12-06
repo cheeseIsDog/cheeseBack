@@ -1,6 +1,7 @@
 package cheese.cheese.entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -20,15 +21,22 @@ public class User {
     @Column(name="nick_name")
     private String nickName;
 
-    @Column(name="user_name")
-    private String userName;
+    @Column(name="id")
+    private String id;
 
     @Column(name="password")
     private String password;
 
     @Column(name="score")
-    private String score;
+    private Integer score;
 
     @Column(name="school_id")
-    private String schoolId;
+    private Long schoolId;
+
+    @Builder
+    public User(String nickName, String id, String password) {
+        this.nickName = nickName;
+        this.id = id;
+        this.password = password;
+    }
 }
