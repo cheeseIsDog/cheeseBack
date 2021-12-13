@@ -27,7 +27,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Not Found !!")
     })
     @PostMapping("/signIn")
-    public CommonResult signIn(@RequestBody UserDto.loginReq login)throws Exception {
+    public CommonResult signIn(@RequestBody UserDto.loginReq login) throws Exception {
         return responseService.getSingleResult(userService.signIn(login));
     }
 
@@ -38,7 +38,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Not Found !!")
     })
     @PostMapping("/signUp")
-    public CommonResult signUp(@RequestBody UserDto.SignUpReq dto ) {
+    public CommonResult signUp(@RequestBody UserDto.SignUpReq dto )  throws Exception{
         return responseService.getBooleanResult(userService.signUp(dto));
     }
 }

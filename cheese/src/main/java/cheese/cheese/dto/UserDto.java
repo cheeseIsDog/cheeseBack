@@ -9,33 +9,36 @@ public class UserDto {
     @Getter
     public static class SignUpReq {
         private String nickName;
-        private String id;
         private String password;
+        private String email;
+        private String authNumber;
 
         @Builder
-        public SignUpReq(String nickName, String id, String password) {
+        public SignUpReq(String nickName, String password, String email, String authNumber) {
             this.nickName = nickName;
-            this.id = id;
             this.password = password;
+            this.email = email;
+            this.authNumber = authNumber;
         }
 
         public User toEntity() {
             return User.builder()
                     .nickName(this.nickName)
-                    .id(this.id)
                     .password(this.password)
+                    .email(this.email)
+                    .authNumber(this.authNumber)
                     .build();
         }
     }
 
     @Getter
     public static class loginReq{
-        private String id;
+        private String email;
         private String password;
 
         @Builder
-        public loginReq(String id, String password){
-            this.id = id;
+        public loginReq(String email, String password){
+            this.email = email;
             this.password = password;
         }
     }

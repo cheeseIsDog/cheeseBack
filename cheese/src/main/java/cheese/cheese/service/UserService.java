@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private final UserRepository userRepository;
 
-    public Boolean signUp(UserDto.SignUpReq signUpReq) {
+    public Boolean signUp(UserDto.SignUpReq signUpReq) throws Exception{
         Boolean result = false;
-        if (!this.isExistedId(signUpReq.getId())) {
+        if (this.isNotExistedEmail(signUpReq.getEmail()) && this.isNotExistedNickName(signUpReq.getEmail())) {
             userRepository.save(signUpReq.toEntity());
             result = true;
         }
@@ -22,7 +22,7 @@ public class UserService {
     }
 
     public UserDto.res signIn(UserDto.loginReq loginReq) {
-        User user = userRepository.findByIdAndPassword(loginReq.getId(), loginReq.getPassword())
+        User user = userRepository.findByEmailAndPassword(loginReq.getEmail(), loginReq.getPassword())
                 .orElseThrow(UserNotFoundException::new);
         return UserDto.res.builder()
                 .userId(user.getUserId())
@@ -31,7 +31,13 @@ public class UserService {
                 .build();
     }
 
-    private Boolean isExistedId(String id) {
-        return userRepository.findById(id).orElse(null) != null;
+    private Boolean isNotExistedEmail(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        return user == null;
+    }
+
+    private Boolean isNotExistedNickName(String nickName) {
+        User user = userRepository.findByNickName(nickName).orElseThrow(UserNotFoundException::new);
+        return user == null;
     }
 }

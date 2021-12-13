@@ -4,11 +4,15 @@ import lombok.Getter;
 
 @Getter
 public class UserDuplicationException extends RuntimeException {
-    private String id;
-    private String msg;
+    public UserDuplicationException(String msg, Throwable t){
+        super(msg, t);
+    }
 
-    public UserDuplicationException(String id){
-        this.id = id;
-        this.msg = "중복되는 아이디입니다.";
+    public UserDuplicationException(String msg){
+        super(msg);
+    }
+
+    public UserDuplicationException(){
+        super();
     }
 }

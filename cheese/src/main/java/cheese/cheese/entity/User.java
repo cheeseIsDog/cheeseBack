@@ -21,8 +21,11 @@ public class User {
     @Column(name="nick_name")
     private String nickName;
 
-    @Column(name="id")
-    private String id;
+    @Column(name="email")
+    private String email;
+
+    @Column(name="auth_number")
+    private String authNumber;
 
     @Column(name="password")
     private String password;
@@ -34,9 +37,10 @@ public class User {
     private Long schoolId;
 
     @Builder
-    public User(String nickName, String id, String password) {
+    public User(String nickName, String password, String email, String authNumber) {
         this.nickName = nickName;
-        this.id = id;
         this.password = password;
+        this.email = email;
+        this.authNumber = authNumber;
     }
 }

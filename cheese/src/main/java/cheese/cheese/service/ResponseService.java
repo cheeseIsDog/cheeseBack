@@ -3,26 +3,13 @@ package cheese.cheese.service;
 import cheese.cheese.ResultForm.CommonResult;
 import cheese.cheese.ResultForm.ListResult;
 import cheese.cheese.ResultForm.SingleResult;
-import lombok.Getter;
+import cheese.cheese.dto.Enum.CommonResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class ResponseService {
-    @Getter
-    private enum CommonResponse{
-        SUCCESS(0, "성공하셨습니다."),
-        FAIL( -1, "실패하셨습니다.");
-
-        int code;
-        String msg;
-
-        CommonResponse(int code, String msg) {
-            this.code = code;
-            this.msg = msg;
-        }
-    }
 
     public <T> SingleResult<T> getSingleResult(T data) {
         SingleResult<T> result = new SingleResult<>();
@@ -53,6 +40,14 @@ public class ResponseService {
         result.setSuccess(false);
         result.setCode(CommonResponse.FAIL.getCode());
         result.setMsg(CommonResponse.FAIL.getMsg());
+        return result;
+    }
+
+    public CommonResult getFailResult(CommonResponse commonResponse) {
+        CommonResult result = new CommonResult();
+        result.setSuccess(false);
+        result.setCode(commonResponse.getCode());
+        result.setMsg(commonResponse.getMsg());
         return result;
     }
 
