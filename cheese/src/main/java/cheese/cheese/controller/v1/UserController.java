@@ -1,8 +1,6 @@
 package cheese.cheese.controller.v1;
 
-import cheese.cheese.ResultForm.CommonResult;
 import cheese.cheese.dto.UserDto;
-import cheese.cheese.service.ResponseService;
 import cheese.cheese.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("web/v1/user")
 @CrossOrigin(origins = "*")
 public class UserController {
-    private final ResponseService responseService;
     private final UserService userService;
 
     @Operation(summary = "signIn", description = "로그인")
@@ -27,8 +24,8 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Not Found !!")
     })
     @PostMapping("/signIn")
-    public CommonResult signIn(@RequestBody UserDto.loginReq login) throws Exception {
-        return responseService.getSingleResult(userService.signIn(login));
+    public UserDto.res signIn(@RequestBody UserDto.loginReq login) throws Exception {
+        return userService.signIn(login);
     }
 
     @Operation(summary = "signUp", description = "회원가")
@@ -38,7 +35,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Not Found !!")
     })
     @PostMapping("/signUp")
-    public CommonResult signUp(@RequestBody UserDto.SignUpReq dto )  throws Exception{
-        return responseService.getBooleanResult(userService.signUp(dto));
+    public Boolean signUp(@RequestBody UserDto.SignUpReq dto )  throws Exception{
+        return userService.signUp(dto);
     }
 }

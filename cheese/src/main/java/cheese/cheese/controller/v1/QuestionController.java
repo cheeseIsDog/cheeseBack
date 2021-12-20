@@ -1,6 +1,5 @@
 package cheese.cheese.controller.v1;
 
-import cheese.cheese.service.ResponseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -13,6 +12,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("web/v1/question")
 @CrossOrigin(origins = "*")
 public class QuestionController {
-    private final ResponseService responseService;
-
 }
