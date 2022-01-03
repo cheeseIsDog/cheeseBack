@@ -38,6 +38,8 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    compile "org.springframework.boot:spring-boot-starter-mail"
 }
 
 test {
@@ -53,9 +55,11 @@ querydsl {
 sourceSets {
     main.java.srcDir querydslDir
 }
+
 compileQuerydsl{
     options.annotationProcessorPath = configurations.querydsl
 }
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
