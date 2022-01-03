@@ -1,11 +1,14 @@
 package cheese.cheese.controller.v1;
 
+import cheese.cheese.dto.QuestionDto;
+import cheese.cheese.dto.UserDto;
 import cheese.cheese.service.QuestionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -15,4 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class QuestionController {
     private final QuestionService questionService;
 
+    @Operation(summary = "post Question", description = "질문 생성")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
+            @ApiResponse(responseCode = "404", description = "Not Found !!")
+    })
+    @PostMapping("/question")
+    public Boolean signIn(@RequestBody QuestionDto.gen gen) throws Exception {
+        return questionService.create(gen);
+    }
 }
