@@ -37,6 +37,7 @@ public class QuestionDto {
     }
 
     @Getter
+    @NoArgsConstructor
     public static class res{
         private Long questionId;
         private Long userId;
