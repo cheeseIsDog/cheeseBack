@@ -3,8 +3,10 @@ package cheese.cheese.repository;
 import cheese.cheese.entity.Question;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
     Optional<Question> findByTitleAndSchoolId(String title, Long SchoolId);
+    List<Question> findBySchoolId(Long SchoolId);
 }

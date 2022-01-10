@@ -6,6 +6,9 @@ import cheese.cheese.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class QuestionService {
@@ -25,7 +28,11 @@ public class QuestionService {
         return question == null;
     }
 
-    public void getQuestions() {
-
+    public List<QuestionDto.res> getQuestionsBySchoolId(Long schoolId) {
+        return questionRepository
+                .findBySchoolId(schoolId)
+                .stream()
+                .map(question -> new QuestionDto.res(question))
+                .collect(Collectors.toList());
     }
 }

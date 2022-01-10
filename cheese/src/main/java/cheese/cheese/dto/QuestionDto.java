@@ -5,11 +5,13 @@ import cheese.cheese.entity.Question;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 public class QuestionDto {
 
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     @Builder
     public static class gen{
         private Long userId;
@@ -29,12 +31,12 @@ public class QuestionDto {
 
     @Getter
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class req{
         private Long schoolId;
     }
 
     @Getter
-    @AllArgsConstructor
     @Builder
     public static class res{
         private Long questionId;
@@ -44,5 +46,15 @@ public class QuestionDto {
         private String contents;
         private Integer likes;
         private Integer dislikes;
+
+        public res(Question question) {
+            this.questionId = question.getQuestionId();
+            this.userId = question.getUserId();
+            this.schoolId = question.getSchoolId();
+            this.title = question.getTitle();
+            this.contents = question.getContents();
+            this.likes = question.getLikes();
+            this.dislikes = question.getDislikes();
+        }
     }
 }

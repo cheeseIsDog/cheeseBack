@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -20,7 +21,9 @@ public class Question {
     private Long schoolId;
     private String title;
     private String contents;
+    @ColumnDefault("0")
     private Integer likes;
+    @ColumnDefault("0")
     private Integer dislikes;
 
     @Builder
