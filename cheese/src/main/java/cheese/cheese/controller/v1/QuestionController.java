@@ -24,7 +24,7 @@ public class QuestionController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
             @ApiResponse(responseCode = "404", description = "Not Found !!")
     })
-    @PostMapping("/question")
+    @PostMapping("/create")
     public Boolean signIn(@RequestBody QuestionDto.gen gen) throws Exception {
         return questionService.create(gen);
     }
