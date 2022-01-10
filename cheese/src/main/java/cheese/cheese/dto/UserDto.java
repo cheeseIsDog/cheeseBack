@@ -3,10 +3,12 @@ package cheese.cheese.dto;
 import cheese.cheese.entity.User;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 public class UserDto {
 
     @Getter
+    @NoArgsConstructor
     public static class SignUpReq {
         private String nickName;
         private String password;
@@ -32,6 +34,7 @@ public class UserDto {
     }
 
     @Getter
+    @NoArgsConstructor
     public static class loginReq{
         private String email;
         private String password;
@@ -43,6 +46,31 @@ public class UserDto {
         }
     }
 
+    @Getter
+    @NoArgsConstructor
+    public static class sendAuth {
+        private String email;
+
+        @Builder
+        public sendAuth(String email) {
+            this.email = email;
+        }
+    }
+
+    @Getter
+    @NoArgsConstructor
+    public static class authEmail {
+        private String email;
+        private String authNumber;
+
+        @Builder
+        public authEmail(String email, String authNumber) {
+            this.email = email;
+            this.authNumber = authNumber;
+        }
+    }
+
+    @NoArgsConstructor
     public static class res {
         private Long userId;
         private String nickName;

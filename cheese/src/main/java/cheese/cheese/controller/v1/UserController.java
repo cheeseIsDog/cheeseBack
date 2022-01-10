@@ -1,6 +1,7 @@
 package cheese.cheese.controller.v1;
 
 import cheese.cheese.dto.UserDto;
+import cheese.cheese.service.EmailService;
 import cheese.cheese.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "*")
 public class UserController {
     private final UserService userService;
+    private final EmailService emailService;
 
     @Operation(summary = "signIn", description = "로그인")
     @ApiResponses({
@@ -25,10 +27,10 @@ public class UserController {
     })
     @PostMapping("/signIn")
     public UserDto.res signIn(@RequestBody UserDto.loginReq login) throws Exception {
-        return userService.signIn(login);
+        return this.userService.signIn(login);
     }
 
-    @Operation(summary = "signUp", description = "회원가")
+    @Operation(summary = "signUp", description = "회원가입")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
@@ -36,6 +38,28 @@ public class UserController {
     })
     @PostMapping("/signUp")
     public Boolean signUp(@RequestBody UserDto.SignUpReq dto )  throws Exception{
-        return userService.signUp(dto);
+        return this.userService.signUp(dto);
+    }
+
+    @Operation(summary = "sendMail", description = "검증 이메일 전송")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
+            @ApiResponse(responseCode = "404", description = "Not Found !!")
+    })
+    @PostMapping("/sendMail")
+    public Boolean sendMail(@RequestBody UserDto.sendAuth dto) throws Exception {
+        return this.emailService.sendEmail(dto.getEmail());
+    }
+
+    @Operation(summary = "authMail", description = "검증 이메일 전송")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
+            @ApiResponse(responseCode = "404", description = "Not Found !!")
+    })
+    @PostMapping("/authMail")
+    public Boolean authMail(@RequestBody UserDto.authEmail dto) throws Exception {
+        return this.emailService.sendAuth(dto);
     }
 }
