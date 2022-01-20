@@ -30,7 +30,7 @@ public class EmailService {
             result = true;
         } catch(MailException es) {
             result = false;
-            throw new Exception("Get Exception during sendEmail");
+            throw new Exception("Get Exception during sendEmail :" + es.getMessage());
         }
 
         return result;
