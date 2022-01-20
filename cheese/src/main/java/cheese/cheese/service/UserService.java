@@ -14,7 +14,7 @@ public class UserService {
 
     public Boolean signUp(UserDto.SignUpReq signUpReq) throws Exception{
         Boolean result = false;
-        if (this.isNotExistedEmail(signUpReq.getEmail()) && this.isNotExistedNickName(signUpReq.getEmail())) {
+        if (this.isNotExistedEmail(signUpReq.getEmail()) && this.isNotExistedNickName(signUpReq.getNickName())) {
             userRepository.save(signUpReq.toEntity());
             result = true;
         }
@@ -31,13 +31,26 @@ public class UserService {
                 .build();
     }
 
+    public Boolean delete(UserDto.delete del) {
+        Boolean result = true;
+        User user = userRepository.findByEmail(del.getEmail()).orElse(null);
+
+        if (user == null) {
+            result = false;
+        } else {
+            userRepository.delete(user);
+        }
+
+        return result;
+    }
+
     private Boolean isNotExistedEmail(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findByEmail(email).orElse(null);
         return user == null;
     }
 
     private Boolean isNotExistedNickName(String nickName) {
-        User user = userRepository.findByNickName(nickName).orElseThrow(UserNotFoundException::new);
+        User user = userRepository.findByNickName(nickName).orElse(null);
         return user == null;
     }
 }

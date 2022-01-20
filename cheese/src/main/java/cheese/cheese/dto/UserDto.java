@@ -84,4 +84,14 @@ public class UserDto {
             this.score = score;
         }
     }
+
+    @NoArgsConstructor
+    @Getter
+    public static class delete {
+        private String email;
+        @Builder
+        public delete(String email) {
+            this.email = email;
+        }
+    }
 }

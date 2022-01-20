@@ -36,6 +36,17 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
             @ApiResponse(responseCode = "404", description = "Not Found !!")
     })
+    @PostMapping("/deleteUserForYongda")
+    public Boolean delete(@RequestBody UserDto.delete del)  throws Exception{
+        return this.userService.delete(del);
+    }
+
+    @Operation(summary = "signUp", description = "회원가입")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
+            @ApiResponse(responseCode = "404", description = "Not Found !!")
+    })
     @PostMapping("/signUp")
     public Boolean signUp(@RequestBody UserDto.SignUpReq dto )  throws Exception{
         return this.userService.signUp(dto);

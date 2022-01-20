@@ -1,9 +1,14 @@
 package cheese.cheese.service;
 
 import cheese.cheese.dto.CommentDto;
+import cheese.cheese.dto.QuestionDto;
+import cheese.cheese.entity.Comment;
 import cheese.cheese.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,5 +25,11 @@ public class CommentService {
         return result;
     }
 
-
+    public List<CommentDto.res> getCommentByAnswerId(CommentDto.req req) {
+        return commentRepository
+                .findByAnswerId(req.getAnswerId())
+                .stream()
+                .map(comment -> new CommentDto.res(comment))
+                .collect(Collectors.toList());
+    }
 }
