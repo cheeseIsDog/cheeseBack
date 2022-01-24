@@ -1,5 +1,6 @@
 package cheese.cheese.entity;
 
+import cheese.cheese.entity.common.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Table(name="school")
-public class School {
+public class School extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="school_id")
