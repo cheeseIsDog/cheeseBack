@@ -1,7 +1,6 @@
 package cheese.cheese.controller.v1;
 
 import cheese.cheese.dto.QuestionDto;
-import cheese.cheese.dto.UserDto;
 import cheese.cheese.service.QuestionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -20,7 +19,7 @@ import java.util.List;
 public class QuestionController {
     private final QuestionService questionService;
 
-    @Operation(summary = "create Question", description = "질문 생성")
+    @Operation(summary = "create Question", description = "학교 내 질문 생성")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
@@ -31,7 +30,7 @@ public class QuestionController {
         return questionService.create(gen);
     }
 
-    @Operation(summary = "get Question", description = "질문 쿼리")
+    @Operation(summary = "get Question", description = "학교 내 전체 질문 쿼리")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),

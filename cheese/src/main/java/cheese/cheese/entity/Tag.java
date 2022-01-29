@@ -1,5 +1,6 @@
 package cheese.cheese.entity;
 
+import cheese.cheese.dto.TagDto;
 import cheese.cheese.entity.common.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,4 +24,13 @@ public class Tag extends BaseTimeEntity {
 
     @Column(name="tag_name")
     private String tagName;
+
+    public TagDto.res toDto() {
+        return new TagDto.res(this);
+    }
+
+    public Tag(Long questionId, String tagName) {
+        this.QuestionId = questionId;
+        this.tagName = tagName;
+    }
 }

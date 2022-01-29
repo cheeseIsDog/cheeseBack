@@ -1,5 +1,6 @@
 package cheese.cheese.entity;
 
+import cheese.cheese.dto.Enum.YN;
 import cheese.cheese.entity.common.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,10 +23,12 @@ public class Question extends BaseTimeEntity {
     private Long schoolId;
     private String title;
     private String contents;
-    @ColumnDefault("0")
+    @Column(columnDefinition = "integer default 0")
     private Integer likes;
-    @ColumnDefault("0")
+    @Column(columnDefinition = "integer default 0")
     private Integer dislikes;
+    @Enumerated(EnumType.STRING)
+    private YN solved_YN;
 
     @Builder
     public Question (Long userId, Long schoolId, String title, String contents) {
@@ -33,5 +36,8 @@ public class Question extends BaseTimeEntity {
         this.schoolId = schoolId;
         this.title = title;
         this.contents = contents;
+        this.likes = 0;
+        this.dislikes = 0;
+        this.solved_YN = YN.No;
     }
 }

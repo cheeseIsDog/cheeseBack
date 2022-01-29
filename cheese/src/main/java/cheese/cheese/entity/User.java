@@ -1,5 +1,6 @@
 package cheese.cheese.entity;
 
+import cheese.cheese.dto.UserDto;
 import cheese.cheese.entity.common.BaseTimeEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,5 +44,9 @@ public class User extends BaseTimeEntity {
         this.password = password;
         this.email = email;
         this.authNumber = authNumber;
+    }
+
+    public UserDto.res toDto() {
+        return new UserDto.res(this.getUserId(), this.getNickName(), this.getScore());
     }
 }

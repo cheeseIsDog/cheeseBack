@@ -3,6 +3,8 @@ package cheese.cheese.service;
 import cheese.cheese.dto.QuestionDto;
 import cheese.cheese.entity.Question;
 import cheese.cheese.repository.QuestionRepository;
+import cheese.cheese.repository.QuestionDslRepository;
+import cheese.cheese.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,11 +15,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class QuestionService {
     private final QuestionRepository questionRepository;
+    private final TagRepository tagRepository;
+    private final QuestionDslRepository questionDslRepository;
 
     public Boolean create(QuestionDto.gen gen) {
         Boolean result = false;
         if (this.isNotExistedQuestionTitle(gen.getTitle(), gen.getSchoolId())) {
-            questionRepository.save(gen.toEntity());
+            Question question = questionRepository.save(gen.toEntity());
+            tagRepository.saveAll(gen.getTagEntities(question.getQuestionId()));
             result = true;
         }
         return result;
@@ -29,10 +34,6 @@ public class QuestionService {
     }
 
     public List<QuestionDto.res> getQuestionsBySchoolId(Long schoolId) {
-        return questionRepository
-                .findBySchoolId(schoolId)
-                .stream()
-                .map(question -> new QuestionDto.res(question))
-                .collect(Collectors.toList());
+        return questionDslRepository.getQuestionsWithTag(schoolId);
     }
 }
