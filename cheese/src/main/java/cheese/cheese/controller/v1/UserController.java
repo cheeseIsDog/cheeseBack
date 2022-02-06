@@ -30,7 +30,7 @@ public class UserController {
         return this.userService.signIn(login);
     }
 
-    @Operation(summary = "signUp", description = "회원가입")
+    @Operation(summary = "delete", description = "이메일로 유저 삭제 ( 일시 )")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),

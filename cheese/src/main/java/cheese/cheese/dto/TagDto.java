@@ -12,8 +12,8 @@ public class TagDto {
         private String name;
 
         public res(Tag tag) {
-            this.tagId = tag.getTagId();
-            this.name = tag.getTagName();
+            this.tagId = tag == null ? null : tag.getTagId();
+            this.name = tag == null ? null : tag.getTagName();
         }
     }
 }

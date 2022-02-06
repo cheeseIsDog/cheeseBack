@@ -39,11 +39,13 @@ public class User extends BaseTimeEntity {
     private Long schoolId;
 
     @Builder
-    public User(String nickName, String password, String email, String authNumber) {
+    public User(String nickName, String password, Long schoolId, String email, String authNumber) {
         this.nickName = nickName;
         this.password = password;
         this.email = email;
         this.authNumber = authNumber;
+        this.schoolId = schoolId;
+        this.score = 0;
     }
 
     public UserDto.res toDto() {

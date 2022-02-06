@@ -20,7 +20,7 @@ public class Tag extends BaseTimeEntity {
     private Long tagId;
 
     @Column(name="question_id")
-    private Long QuestionId;
+    private Long questionId;
 
     @Column(name="tag_name")
     private String tagName;
@@ -30,7 +30,7 @@ public class Tag extends BaseTimeEntity {
     }
 
     public Tag(Long questionId, String tagName) {
-        this.QuestionId = questionId;
+        this.questionId = questionId;
         this.tagName = tagName;
     }
 }

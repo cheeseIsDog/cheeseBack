@@ -1,6 +1,7 @@
 package cheese.cheese.dto;
 
 import cheese.cheese.entity.User;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,13 +14,15 @@ public class UserDto {
         private String nickName;
         private String password;
         private String email;
+        private Long schoolId;
         private String authNumber;
 
         @Builder
-        public SignUpReq(String nickName, String password, String email, String authNumber) {
+        public SignUpReq(String nickName, String password, String email, Long schoolId, String authNumber) {
             this.nickName = nickName;
             this.password = password;
             this.email = email;
+            this.schoolId = schoolId;
             this.authNumber = authNumber;
         }
 
@@ -29,6 +32,7 @@ public class UserDto {
                     .password(this.password)
                     .email(this.email)
                     .authNumber(this.authNumber)
+                    .schoolId(this.schoolId)
                     .build();
         }
     }
@@ -71,6 +75,7 @@ public class UserDto {
     }
 
     @NoArgsConstructor
+    @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
     public static class res {
         private Long userId;
         private String nickName;

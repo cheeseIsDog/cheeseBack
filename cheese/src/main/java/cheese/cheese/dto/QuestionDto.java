@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,12 +57,12 @@ public class QuestionDto {
         private Long schoolId;
         private String title;
         private String contents;
-        private List<TagDto.res> tagList;
+        private List<TagDto.res> tagList = new ArrayList<>();
         private Integer likes;
         private Integer dislikes;
         private Integer duringTime;
 
-        public res(Question question, User user, List<Tag> tag) {
+        public res(Question question, User user) {
             this.questionId = question.getQuestionId();
             this.user = user.toDto();
             this.schoolId = question.getSchoolId();
@@ -69,10 +70,6 @@ public class QuestionDto {
             this.contents = question.getContents();
             this.likes = question.getLikes();
             this.dislikes = question.getDislikes();
-            this.tagList = tag
-                    .stream()
-                    .map(element -> element.toDto())
-                    .collect(Collectors.toList());
             this.duringTime = question.getCreatedDate().truncatedTo(ChronoUnit.MINUTES)
                     .compareTo(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
         }
