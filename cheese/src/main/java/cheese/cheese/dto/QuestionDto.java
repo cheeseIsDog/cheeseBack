@@ -46,6 +46,8 @@ public class QuestionDto {
     @NoArgsConstructor
     public static class req{
         private Long schoolId;
+        private Long offset;
+        private Long limit;
     }
 
     @Getter
@@ -97,6 +99,29 @@ public class QuestionDto {
             this.solvedQuestions = solvedQuestions;
             this.unSolvedQuestions = totalQuestions - solvedQuestions;
             this.totalAnswers = 0;
+        }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class reqOfSchoolQuestions{
+        private Long schoolId;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class resOfSchoolQuestions{
+        private Integer totalQuestions;
+        private Integer solvedQuestions;
+        private Integer unSolvedQuestions;
+
+        public resOfSchoolQuestions(Integer totalQuestions, Integer solvedQuestions) {
+            this.totalQuestions = totalQuestions;
+            this.solvedQuestions = solvedQuestions;
+            this.unSolvedQuestions = totalQuestions - solvedQuestions;
         }
     }
 }

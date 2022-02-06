@@ -27,7 +27,7 @@ import static com.querydsl.core.types.Projections.list;
 public class QuestionDslRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
-    public List<QuestionDto.res> getQuestionsWithTag(Long schoolId) {
+    public List<QuestionDto.res> getQuestionsWithTag(Long schoolId, Long offSet, Long limit) {
         List<QuestionDto.res> result = this.jpaQueryFactory.select(
                         Projections.constructor(
                                 QuestionDto.res.class,
@@ -37,6 +37,8 @@ public class QuestionDslRepository {
                 )
                 .from(question)
                 .where(question.schoolId.eq(schoolId))
+                .offset(offSet)
+                .limit(limit)
                 .leftJoin(user).on(user.userId.eq(question.userId))
                 .fetch();
 
@@ -62,5 +64,14 @@ public class QuestionDslRepository {
         Integer totalQuestions = result.size();
         Integer solvedQuestions = result.stream().filter(element -> element.getSolved_YN() == YN.Yes).toArray().length;
         return new QuestionDto.resOfUserQuestions(totalQuestions, solvedQuestions);
+    }
+
+    public QuestionDto.resOfSchoolQuestions getQuestionsOfSchoolInfo(Long schoolId) {
+        List<Question> result = this.jpaQueryFactory.selectFrom(question)
+                .where(question.schoolId.eq(schoolId))
+                .fetch();
+        Integer totalQuestions = result.size();
+        Integer solvedQuestions = result.stream().filter(element -> element.getSolved_YN() == YN.Yes).toArray().length;
+        return new QuestionDto.resOfSchoolQuestions(totalQuestions, solvedQuestions);
     }
 }

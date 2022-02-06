@@ -36,9 +36,10 @@ public class QuestionController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
             @ApiResponse(responseCode = "404", description = "Not Found !!")
     })
+
     @PostMapping("/getBySchool")
     public List<QuestionDto.res> getQuestions(@RequestBody QuestionDto.req req) throws Exception {
-        return questionService.getQuestionsBySchoolId(req.getSchoolId());
+        return questionService.getQuestionsBySchoolId(req);
     }
 
     @Operation(summary = "get user's questions info", description = "유저의 질문 관련 정보 쿼리")
@@ -47,8 +48,20 @@ public class QuestionController {
             @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
             @ApiResponse(responseCode = "404", description = "Not Found !!")
     })
-    @PostMapping("/getByUser")
+
+    @PostMapping("/getInfoByUser")
     public QuestionDto.resOfUserQuestions getUserQuestionsInfo(@RequestBody QuestionDto.reqOfUserQuestions req) throws Exception {
         return questionService.getUserQuestionsInfo(req.getUserId());
+    }
+
+    @Operation(summary = "get user's questions info", description = "유저의 학교 전체 질문 관련 정보 쿼리")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
+            @ApiResponse(responseCode = "404", description = "Not Found !!")
+    })
+    @PostMapping("/getInfoBySchool")
+    public QuestionDto.resOfSchoolQuestions getQuestionsOfSchoolInfo(@RequestBody QuestionDto.reqOfSchoolQuestions req) throws Exception {
+        return questionService.getQuestionsOfSchoolInfo(req.getSchoolId());
     }
 }

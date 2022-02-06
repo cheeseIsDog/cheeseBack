@@ -32,11 +32,15 @@ public class QuestionService {
         return question == null;
     }
 
-    public List<QuestionDto.res> getQuestionsBySchoolId(Long schoolId) {
-        return questionDslRepository.getQuestionsWithTag(schoolId);
+    public List<QuestionDto.res> getQuestionsBySchoolId(QuestionDto.req req) {
+        return questionDslRepository.getQuestionsWithTag(req.getSchoolId(), req.getOffset() ,req.getLimit());
     }
 
     public QuestionDto.resOfUserQuestions getUserQuestionsInfo(Long userId) {
         return this.questionDslRepository.getUserQuestionsInfo(userId);
+    }
+
+    public QuestionDto.resOfSchoolQuestions getQuestionsOfSchoolInfo(Long schoolId) {
+        return this.questionDslRepository.getQuestionsOfSchoolInfo(schoolId);
     }
 }
