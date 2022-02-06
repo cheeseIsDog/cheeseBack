@@ -1,8 +1,10 @@
 package cheese.cheese.repository;
 
+import cheese.cheese.dto.Enum.YN;
 import cheese.cheese.dto.QuestionDto;
 import cheese.cheese.dto.TagDto;
 import cheese.cheese.entity.QTag;
+import cheese.cheese.entity.Question;
 import cheese.cheese.entity.Tag;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.Projections;
@@ -51,5 +53,14 @@ public class QuestionDslRepository {
 
         });
         return result;
+    }
+
+    public QuestionDto.resOfUserQuestions getUserQuestionsInfo(Long userId) {
+        List<Question> result = this.jpaQueryFactory.selectFrom(question)
+                .where(question.userId.eq(userId))
+                .fetch();
+        Integer totalQuestions = result.size();
+        Integer solvedQuestions = result.stream().filter(element -> element.getSolved_YN() == YN.Yes).toArray().length;
+        return new QuestionDto.resOfUserQuestions(totalQuestions, solvedQuestions);
     }
 }

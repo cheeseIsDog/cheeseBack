@@ -1,14 +1,13 @@
 package cheese.cheese.dto;
 
 
+import cheese.cheese.dto.Enum.YN;
 import cheese.cheese.entity.Question;
 import cheese.cheese.entity.Tag;
 import cheese.cheese.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -60,7 +59,8 @@ public class QuestionDto {
         private List<TagDto.res> tagList = new ArrayList<>();
         private Integer likes;
         private Integer dislikes;
-        private Integer duringTime;
+        private Long duringTime;
+        private YN solved_YN;
 
         public res(Question question, User user) {
             this.questionId = question.getQuestionId();
@@ -70,8 +70,33 @@ public class QuestionDto {
             this.contents = question.getContents();
             this.likes = question.getLikes();
             this.dislikes = question.getDislikes();
-            this.duringTime = question.getCreatedDate().truncatedTo(ChronoUnit.MINUTES)
-                    .compareTo(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES));
+            this.duringTime = Duration.between(question.getCreatedDate(), LocalDateTime.now()).getSeconds();
+            this.solved_YN = question.getSolved_YN();
+        }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class reqOfUserQuestions{
+        private Long userId;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class resOfUserQuestions{
+        private Integer totalQuestions;
+        private Integer solvedQuestions;
+        private Integer unSolvedQuestions;
+        private Integer totalAnswers;
+
+        public resOfUserQuestions(Integer totalQuestions, Integer solvedQuestions) {
+            this.totalQuestions = totalQuestions;
+            this.solvedQuestions = solvedQuestions;
+            this.unSolvedQuestions = totalQuestions - solvedQuestions;
+            this.totalAnswers = 0;
         }
     }
 }

@@ -40,4 +40,15 @@ public class QuestionController {
     public List<QuestionDto.res> getQuestions(@RequestBody QuestionDto.req req) throws Exception {
         return questionService.getQuestionsBySchoolId(req.getSchoolId());
     }
+
+    @Operation(summary = "get user's questions info", description = "유저의 질문 관련 정보 쿼리")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
+            @ApiResponse(responseCode = "404", description = "Not Found !!")
+    })
+    @PostMapping("/getByUser")
+    public QuestionDto.resOfUserQuestions getUserQuestionsInfo(@RequestBody QuestionDto.reqOfUserQuestions req) throws Exception {
+        return questionService.getUserQuestionsInfo(req.getUserId());
+    }
 }
