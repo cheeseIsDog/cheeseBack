@@ -3,23 +3,23 @@ package cheese.cheese.repository;
 import cheese.cheese.dto.Enum.YN;
 import cheese.cheese.dto.QuestionDto;
 import cheese.cheese.dto.TagDto;
-import cheese.cheese.entity.QTag;
 import cheese.cheese.entity.Question;
-import cheese.cheese.entity.Tag;
-import com.querydsl.core.Tuple;
+import cheese.cheese.entity.TagMaster;
+import cheese.cheese.entity.TagWord;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static cheese.cheese.entity.QQuestion.question;
-import static cheese.cheese.entity.QTag.tag;
 import static cheese.cheese.entity.QUser.user;
-import static com.querydsl.core.types.Projections.list;
+import static cheese.cheese.entity.QTagMaster.tagMaster;
+import static cheese.cheese.entity.QTagWord.tagWord;
+
+
 
 @Slf4j
 @Repository
@@ -27,7 +27,8 @@ import static com.querydsl.core.types.Projections.list;
 public class QuestionDslRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
-    public List<QuestionDto.res> getQuestionsWithTag(Long schoolId, Long offSet, Long limit) {
+    public List<QuestionDto.res> getQuestionsWithTag(QuestionDto.req req) {
+        Long schoolId = req.getSchoolId();
         List<QuestionDto.res> result = this.jpaQueryFactory.select(
                         Projections.constructor(
                                 QuestionDto.res.class,
@@ -37,22 +38,50 @@ public class QuestionDslRepository {
                 )
                 .from(question)
                 .where(question.schoolId.eq(schoolId))
-                .offset(offSet)
-                .limit(limit)
+                .offset(req.getOffset())
+                .limit(req.getLimit())
                 .leftJoin(user).on(user.userId.eq(question.userId))
                 .fetch();
 
-        result.stream().forEach(res -> {
-            List<Tag> tagList = this.jpaQueryFactory.select(tag)
-                    .from(tag)
-                    .where(tag.questionId.eq(res.getQuestionId()))
-                    .fetch();
-            tagList.forEach(tagRes -> {
-                    if(tagRes != null) {
-                        res.getTagList().add(tagRes.toDto());
-                    }
-            });
+        return this.makeTagsForQuestions(result);
+    }
 
+    public List<QuestionDto.res> searchQuestionsByTitle(QuestionDto.searchReq req) {
+        Long schoolId = req.getSchoolId();
+        List<QuestionDto.res> result = this.jpaQueryFactory.select(
+                        Projections.constructor(
+                                QuestionDto.res.class,
+                                question,
+                                user
+                        )
+                )
+                .from(question)
+                .where(question.schoolId.eq(schoolId)
+                        .and(question.title.contains(req.getTitle()))
+                )
+                .offset(req.getOffset())
+                .limit(req.getLimit())
+                .leftJoin(user).on(user.userId.eq(question.userId))
+                .fetch();
+
+        return this.makeTagsForQuestions(result);
+    }
+
+    private List<QuestionDto.res> makeTagsForQuestions(List<QuestionDto.res> result) {
+        result.forEach(queryRes -> {
+            List<TagMaster> tagMasters = this.jpaQueryFactory.select(tagMaster)
+                    .from(tagMaster)
+                    .where(tagMaster.questionId.eq(queryRes.getQuestionId()))
+                    .fetch();
+            tagMasters.forEach(tagMasterRes -> {
+                if(tagMasterRes != null) {
+                    List<TagWord> tagWords = this.jpaQueryFactory.select(tagWord)
+                            .from(tagWord)
+                            .where(tagWord.tagWordId.eq(tagMasterRes.getTagWordId()))
+                            .fetch();
+                    tagWords.forEach(tagWord -> queryRes.getTagList().add(new TagDto.res(tagMasterRes, tagWord)));
+                }
+            });
         });
         return result;
     }

@@ -3,16 +3,13 @@ package cheese.cheese.dto;
 
 import cheese.cheese.dto.Enum.YN;
 import cheese.cheese.entity.Question;
-import cheese.cheese.entity.Tag;
 import cheese.cheese.entity.User;
 import lombok.*;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class QuestionDto {
 
@@ -35,10 +32,6 @@ public class QuestionDto {
                     .contents(this.contents)
                     .build();
         }
-
-        public List<Tag> getTagEntities(Long questionId) {
-            return tags.stream().map(t -> new Tag(questionId, t)).collect(Collectors.toList());
-        }
     }
 
     @Getter
@@ -46,6 +39,16 @@ public class QuestionDto {
     @NoArgsConstructor
     public static class req{
         private Long schoolId;
+        private Long offset;
+        private Long limit;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class searchReq{
+        private Long schoolId;
+        private String title;
         private Long offset;
         private Long limit;
     }

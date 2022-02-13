@@ -1,8 +1,8 @@
 package cheese.cheese.entity;
 
-import cheese.cheese.dto.TagDto;
 import cheese.cheese.entity.common.BaseTimeEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,25 +12,19 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Table(name="tag")
-public class Tag extends BaseTimeEntity {
+@Table(name="tag_master")
+public class TagMaster extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="tag_id")
-    private Long tagId;
-
-    @Column(name="question_id")
+    private Long tagMasterId;
     private Long questionId;
+    private Long schoolId;
+    private Long tagWordId;
 
-    @Column(name="tag_name")
-    private String tagName;
-
-    public TagDto.res toDto() {
-        return new TagDto.res(this);
-    }
-
-    public Tag(Long questionId, String tagName) {
+    @Builder
+    public TagMaster(Long questionId, Long schoolId, Long tagWordId) {
         this.questionId = questionId;
-        this.tagName = tagName;
+        this.schoolId = schoolId;
+        this.tagWordId = tagWordId;
     }
 }

@@ -1,30 +1,28 @@
 package cheese.cheese.service;
 
+import cheese.cheese.dto.Enum.Consts;
 import cheese.cheese.dto.QuestionDto;
 import cheese.cheese.entity.Question;
 import cheese.cheese.repository.QuestionRepository;
 import cheese.cheese.repository.QuestionDslRepository;
-import cheese.cheese.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class QuestionService {
     private final QuestionRepository questionRepository;
-    private final TagRepository tagRepository;
     private final QuestionDslRepository questionDslRepository;
 
-    public Boolean create(QuestionDto.gen gen) {
-        Boolean result = false;
+    public Question create(QuestionDto.gen gen) {
+        Question question = null;
         if (this.isNotExistedQuestionTitle(gen.getTitle(), gen.getSchoolId())) {
-            Question question = questionRepository.save(gen.toEntity());
-            tagRepository.saveAll(gen.getTagEntities(question.getQuestionId()));
-            result = true;
+            question = questionRepository.save(gen.toEntity());
         }
-        return result;
+        return question;
     }
 
     private Boolean isNotExistedQuestionTitle(String title, Long schoolId) {
@@ -33,7 +31,14 @@ public class QuestionService {
     }
 
     public List<QuestionDto.res> getQuestionsBySchoolId(QuestionDto.req req) {
-        return questionDslRepository.getQuestionsWithTag(req.getSchoolId(), req.getOffset() ,req.getLimit());
+        return questionDslRepository.getQuestionsWithTag(req);
+    }
+
+    public List<QuestionDto.res> searchQuestionsByTitle(QuestionDto.searchReq req) {
+        if ( Consts.BLANK.equals(req.getTitle()) ) {
+            return new ArrayList<>();
+        }
+        return questionDslRepository.searchQuestionsByTitle(req);
     }
 
     public QuestionDto.resOfUserQuestions getUserQuestionsInfo(Long userId) {
@@ -43,4 +48,5 @@ public class QuestionService {
     public QuestionDto.resOfSchoolQuestions getQuestionsOfSchoolInfo(Long schoolId) {
         return this.questionDslRepository.getQuestionsOfSchoolInfo(schoolId);
     }
+
 }

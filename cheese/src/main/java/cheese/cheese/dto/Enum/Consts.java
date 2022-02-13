@@ -14,4 +14,6 @@ public final class Consts {
 
     public static final String EMAIL_MESSAGE_END = "</strong><div><br/> "
             + "</div>";
+
+    public static final String BLANK = "";
 }
