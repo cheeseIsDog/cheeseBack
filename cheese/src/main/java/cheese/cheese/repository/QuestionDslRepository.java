@@ -3,15 +3,14 @@ package cheese.cheese.repository;
 import cheese.cheese.dto.Enum.YN;
 import cheese.cheese.dto.QuestionDto;
 import cheese.cheese.dto.TagDto;
-import cheese.cheese.entity.Question;
-import cheese.cheese.entity.TagMaster;
-import cheese.cheese.entity.TagWord;
+import cheese.cheese.entity.*;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static cheese.cheese.entity.QQuestion.question;
@@ -46,7 +45,7 @@ public class QuestionDslRepository {
         return this.makeTagsForQuestions(result);
     }
 
-    public List<QuestionDto.res> searchQuestionsByTitle(QuestionDto.searchReq req) {
+    public List<QuestionDto.res> searchQuestionsByTitle(QuestionDto.searchReqByTitle req) {
         Long schoolId = req.getSchoolId();
         List<QuestionDto.res> result = this.jpaQueryFactory.select(
                         Projections.constructor(
@@ -63,6 +62,33 @@ public class QuestionDslRepository {
                 .limit(req.getLimit())
                 .leftJoin(user).on(user.userId.eq(question.userId))
                 .fetch();
+
+        return this.makeTagsForQuestions(result);
+    }
+
+    public List<QuestionDto.res> searchQuestionsByTag(QuestionDto.searchReqByTag req) {
+        TagWord tagWord = this.jpaQueryFactory.selectFrom(QTagWord.tagWord)
+                .where(QTagWord.tagWord.tagName.contains(req.getTagName()))
+                .fetchFirst();
+
+        if ( tagWord == null ) {
+            return new ArrayList<>();
+        }
+
+        List<TagMaster> tagMasters = this.jpaQueryFactory.selectFrom(QTagMaster.tagMaster)
+                .where(tagMaster.tagWordId.eq(tagWord.getTagWordId()))
+                .fetch();
+
+        List<QuestionDto.res> result = new ArrayList<>();
+
+        tagMasters.forEach(tagMaster -> {
+            QuestionDto.req newReq = QuestionDto.req.builder()
+                    .schoolId(tagMaster.getSchoolId())
+                    .limit(req.getLimit())
+                    .offset(req.getOffset())
+                    .build();
+            result.addAll(this.getQuestionsWithTag(newReq));
+        });
 
         return this.makeTagsForQuestions(result);
     }

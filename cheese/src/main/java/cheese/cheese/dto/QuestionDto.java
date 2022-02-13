@@ -37,6 +37,7 @@ public class QuestionDto {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
+    @Builder
     public static class req{
         private Long schoolId;
         private Long offset;
@@ -46,9 +47,20 @@ public class QuestionDto {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class searchReq{
+    public static class searchReqByTitle{
         private Long schoolId;
         private String title;
+        private Long offset;
+        private Long limit;
+    }
+
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class searchReqByTag{
+        private Long schoolId;
+        private String tagName;
         private Long offset;
         private Long limit;
     }

@@ -46,16 +46,28 @@ public class QuestionController {
         return this.questionService.getQuestionsBySchoolId(req);
     }
 
-    @Operation(summary = "search Question", description = "학교 내 질문 검색")
+    @Operation(summary = "search Question", description = "학교 내 질문을 제목으로 검색")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
             @ApiResponse(responseCode = "404", description = "Not Found !!")
     })
 
-    @PostMapping("/searchQuestions")
-    public List<QuestionDto.res> searchQuestions(@RequestBody QuestionDto.searchReq req) throws Exception {
+    @PostMapping("/searchQuestionsByTitle")
+    public List<QuestionDto.res> searchQuestionsByTitle(@RequestBody QuestionDto.searchReqByTitle req) throws Exception {
         return this.questionService.searchQuestionsByTitle(req);
+    }
+
+    @Operation(summary = "search Question", description = "학교 내 질문을 태그로 검색")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
+            @ApiResponse(responseCode = "404", description = "Not Found !!")
+    })
+
+    @PostMapping("/searchQuestionsByTag")
+    public List<QuestionDto.res> searchQuestionsByTag(@RequestBody QuestionDto.searchReqByTag req) throws Exception {
+        return this.questionService.searchQuestionsByTag(req);
     }
 
     @Operation(summary = "get user's questions info", description = "유저의 질문 관련 정보 쿼리")

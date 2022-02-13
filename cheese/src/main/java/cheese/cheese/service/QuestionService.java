@@ -34,11 +34,18 @@ public class QuestionService {
         return questionDslRepository.getQuestionsWithTag(req);
     }
 
-    public List<QuestionDto.res> searchQuestionsByTitle(QuestionDto.searchReq req) {
+    public List<QuestionDto.res> searchQuestionsByTitle(QuestionDto.searchReqByTitle req) {
         if ( Consts.BLANK.equals(req.getTitle()) ) {
             return new ArrayList<>();
         }
         return questionDslRepository.searchQuestionsByTitle(req);
+    }
+
+    public List<QuestionDto.res> searchQuestionsByTag(QuestionDto.searchReqByTag req) {
+        if ( Consts.BLANK.equals(req.getTagName()) ) {
+            return new ArrayList<>();
+        }
+        return questionDslRepository.searchQuestionsByTag(req);
     }
 
     public QuestionDto.resOfUserQuestions getUserQuestionsInfo(Long userId) {

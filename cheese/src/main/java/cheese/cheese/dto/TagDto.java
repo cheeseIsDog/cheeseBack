@@ -6,6 +6,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 public class TagDto {
+
+    @Getter
+    @NoArgsConstructor
+    public static class req{
+        private Long schoolId;
+        private String tagName;
+    }
+
     @Getter
     @NoArgsConstructor
     public static class res{
