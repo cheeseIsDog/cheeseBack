@@ -67,28 +67,42 @@ public class QuestionDslRepository {
     }
 
     public List<QuestionDto.res> searchQuestionsByTag(QuestionDto.searchReqByTag req) {
-        TagWord tagWord = this.jpaQueryFactory.selectFrom(QTagWord.tagWord)
-                .where(QTagWord.tagWord.tagName.contains(req.getTagName()))
-                .fetchFirst();
-
-        if ( tagWord == null ) {
-            return new ArrayList<>();
-        }
-
         List<TagMaster> tagMasters = this.jpaQueryFactory.selectFrom(QTagMaster.tagMaster)
-                .where(tagMaster.tagWordId.eq(tagWord.getTagWordId()))
+                .where(tagMaster.schoolId.eq(req.getSchoolId()))
+                .rightJoin(tagWord)
+                .on(
+                        tagWord.tagWordId.eq(tagMaster.tagWordId)
+                        .and(tagWord.tagName.contains(req.getTagName()))
+                )
                 .fetch();
 
+        List<Long> targetQuestions = new ArrayList<>();
         List<QuestionDto.res> result = new ArrayList<>();
-
         tagMasters.forEach(tagMaster -> {
-            QuestionDto.req newReq = QuestionDto.req.builder()
-                    .schoolId(tagMaster.getSchoolId())
-                    .limit(req.getLimit())
-                    .offset(req.getOffset())
-                    .build();
-            result.addAll(this.getQuestionsWithTag(newReq));
+            if ( !targetQuestions.contains(tagMaster.getQuestionId()) ) {
+                targetQuestions.add(tagMaster.getQuestionId());
+            }
         });
+        targetQuestions.forEach(target -> {
+                    result.addAll(this.getQuestion(target));
+        });
+
+        return result;
+    }
+
+
+    private List<QuestionDto.res> getQuestion(Long questionId) {
+        List<QuestionDto.res> result = this.jpaQueryFactory.select(
+                        Projections.constructor(
+                                QuestionDto.res.class,
+                                question,
+                                user
+                        )
+                )
+                .from(question)
+                .where(question.questionId.eq(questionId))
+                .leftJoin(user).on(user.userId.eq(question.userId))
+                .fetch();
 
         return this.makeTagsForQuestions(result);
     }
