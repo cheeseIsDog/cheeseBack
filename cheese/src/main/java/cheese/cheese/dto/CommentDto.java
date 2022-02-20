@@ -37,12 +37,14 @@ public class CommentDto {
     @Builder
     public static class res{
         private Long answerId;
+        private Long userId;
         private String contents;
         private Integer likes;
         private Integer dislikes;
 
         public res(Comment comment) {
             this.answerId = comment.getAnswerId();
+            this.userId = comment.getUserId();
             this.contents = comment.getContents();
             this.likes = comment.getLikes();
             this.dislikes = comment.getDislikes();

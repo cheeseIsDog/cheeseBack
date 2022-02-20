@@ -46,7 +46,7 @@ public class QuestionController {
         return this.questionService.getQuestionsBySchoolId(req);
     }
 
-    @Operation(summary = "search Question", description = "학교 내 질문을 제목으로 검색")
+    @Operation(summary = "search Question By Title", description = "학교 내 질문을 제목으로 검색")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
@@ -58,7 +58,7 @@ public class QuestionController {
         return this.questionService.searchQuestionsByTitle(req);
     }
 
-    @Operation(summary = "search Question", description = "학교 내 질문을 태그로 검색")
+    @Operation(summary = "search Question By Tag", description = "학교 내 질문을 태그로 검색")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
@@ -82,7 +82,7 @@ public class QuestionController {
         return this.questionService.getUserQuestionsInfo(req.getUserId());
     }
 
-    @Operation(summary = "get user's questions info", description = "유저의 학교 전체 질문 관련 정보 쿼리")
+    @Operation(summary = "get user school's questions info ", description = "유저의 학교 전체 질문 관련 정보 쿼리")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
@@ -91,5 +91,16 @@ public class QuestionController {
     @PostMapping("/getInfoBySchool")
     public QuestionDto.resOfSchoolQuestions getQuestionsOfSchoolInfo(@RequestBody QuestionDto.reqOfSchoolQuestions req) throws Exception {
         return this.questionService.getQuestionsOfSchoolInfo(req.getSchoolId());
+    }
+
+    @Operation(summary = "get question detail", description = "질문의 상세 내용 쿼")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
+            @ApiResponse(responseCode = "404", description = "Not Found !!")
+    })
+    @PostMapping("/getDetail")
+    public QuestionDto.resOfDetail getQuestionDetail(@RequestBody QuestionDto.reqOfDetail req) throws Exception {
+        return this.questionService.getDetail(req.getQuestionId());
     }
 }

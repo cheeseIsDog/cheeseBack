@@ -66,6 +66,13 @@ public class QuestionDto {
     }
 
     @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class reqOfDetail{
+        private Long questionId;
+    }
+
+    @Getter
     @NoArgsConstructor
     public static class res{
         private Long questionId;
@@ -138,5 +145,14 @@ public class QuestionDto {
             this.solvedQuestions = solvedQuestions;
             this.unSolvedQuestions = totalQuestions - solvedQuestions;
         }
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class resOfDetail{
+        String contents;
     }
 }

@@ -1,8 +1,6 @@
 package cheese.cheese.repository;
 
-import cheese.cheese.dto.QuestionDto;
 import cheese.cheese.dto.TagDto;
-import cheese.cheese.entity.TagWord;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -11,10 +9,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-import static cheese.cheese.entity.QQuestion.question;
 import static cheese.cheese.entity.QTagMaster.tagMaster;
 import static cheese.cheese.entity.QTagWord.tagWord;
-import static cheese.cheese.entity.QUser.user;
 
 @Slf4j
 @Repository

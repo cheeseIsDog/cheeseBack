@@ -18,17 +18,10 @@ public class Comment extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="comment_id")
     private Long commentId;
-
-    @Column(name="answer_id")
     private Long answerId;
-
-    @Column(name="contents")
+    private Long userId;
     private String contents;
-
-    @Column(name="likes")
     private Integer likes;
-
-    @Column(name="dislikes")
     private Integer dislikes;
 
     @Builder

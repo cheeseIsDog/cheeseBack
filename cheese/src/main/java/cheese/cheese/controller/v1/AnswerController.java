@@ -1,8 +1,8 @@
 package cheese.cheese.controller.v1;
 
+import cheese.cheese.dto.AnswerDto;
 import cheese.cheese.dto.CommentDto;
-import cheese.cheese.dto.QuestionDto;
-import cheese.cheese.service.CommentService;
+import cheese.cheese.service.AnswerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -13,19 +13,19 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("web/v1/comment")
+@RequestMapping("web/v1/answer")
 @CrossOrigin(origins = "*")
-public class CommentController {
-    private final CommentService commentService;
+public class AnswerController {
+    private final AnswerService answerService;
 
-    @Operation(summary = "create Comment", description = "코멘트(대댓글) 생성")
+    @Operation(summary = "create answer", description = "답변(댓글) 생성")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
             @ApiResponse(responseCode = "404", description = "Not Found !!")
     })
     @PostMapping("/create")
-    public Boolean createQuestion(@RequestBody CommentDto.gen gen) throws Exception {
-        return commentService.create(gen);
+    public Boolean createQuestion(@RequestBody AnswerDto.gen gen) throws Exception {
+        return this.answerService.create(gen);
     }
 }

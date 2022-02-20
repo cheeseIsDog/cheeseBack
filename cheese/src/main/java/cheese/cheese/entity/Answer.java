@@ -2,6 +2,7 @@ package cheese.cheese.entity;
 
 import cheese.cheese.entity.common.BaseTimeEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,4 +33,13 @@ public class Answer extends BaseTimeEntity {
 
     @Column(name="dislikes")
     private Integer dislikes;
+
+    @Builder
+    public Answer(Long userId, Long questionId, String contents) {
+        this.userId = userId;
+        this.questionId = questionId;
+        this.contents = contents;
+        this.likes = 0;
+        this.dislikes = 0;
+    }
 }
