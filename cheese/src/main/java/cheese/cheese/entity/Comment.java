@@ -25,8 +25,9 @@ public class Comment extends BaseTimeEntity {
     private Integer dislikes;
 
     @Builder
-    public Comment(Long answerId, String contents) {
+    public Comment(Long answerId, Long userId, String contents) {
         this.answerId = answerId;
+        this.userId = userId;
         this.contents = contents;
         this.likes = 0;
         this.dislikes = 0;

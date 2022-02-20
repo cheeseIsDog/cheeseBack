@@ -92,15 +92,4 @@ public class QuestionController {
     public QuestionDto.resOfSchoolQuestions getQuestionsOfSchoolInfo(@RequestBody QuestionDto.reqOfSchoolQuestions req) throws Exception {
         return this.questionService.getQuestionsOfSchoolInfo(req.getSchoolId());
     }
-
-    @Operation(summary = "get question detail", description = "질문의 상세 내용 쿼")
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "OK !!"),
-            @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
-            @ApiResponse(responseCode = "404", description = "Not Found !!")
-    })
-    @PostMapping("/getDetail")
-    public QuestionDto.resOfDetail getQuestionDetail(@RequestBody QuestionDto.reqOfDetail req) throws Exception {
-        return this.questionService.getDetail(req.getQuestionId());
-    }
 }

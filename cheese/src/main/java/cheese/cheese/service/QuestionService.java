@@ -55,8 +55,4 @@ public class QuestionService {
     public QuestionDto.resOfSchoolQuestions getQuestionsOfSchoolInfo(Long schoolId) {
         return this.questionDslRepository.getQuestionsOfSchoolInfo(schoolId);
     }
-
-    public QuestionDto.resOfDetail getDetail(Long questionId) {
-        return new QuestionDto.resOfDetail();
-    }
 }

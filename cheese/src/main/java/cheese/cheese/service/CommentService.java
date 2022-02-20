@@ -24,12 +24,4 @@ public class CommentService {
         }
         return result;
     }
-
-    public List<CommentDto.res> getCommentByAnswerId(CommentDto.req req) {
-        return commentRepository
-                .findByAnswerId(req.getAnswerId())
-                .stream()
-                .map(comment -> new CommentDto.res(comment))
-                .collect(Collectors.toList());
-    }
 }

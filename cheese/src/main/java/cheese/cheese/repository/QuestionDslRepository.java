@@ -90,7 +90,6 @@ public class QuestionDslRepository {
         return result;
     }
 
-
     private List<QuestionDto.res> getQuestion(Long questionId) {
         List<QuestionDto.res> result = this.jpaQueryFactory.select(
                         Projections.constructor(

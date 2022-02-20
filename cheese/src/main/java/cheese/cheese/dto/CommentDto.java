@@ -1,6 +1,7 @@
 package cheese.cheese.dto;
 
 import cheese.cheese.entity.Comment;
+import cheese.cheese.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,11 +15,13 @@ public class CommentDto {
     @Builder
     public static class gen{
         private Long answerId;
+        private Long userId;
         private String contents;
 
         public Comment toEntity() {
             return Comment.builder()
                     .answerId(this.answerId)
+                    .userId(this.userId)
                     .contents(this.contents)
                     .build();
         }
@@ -41,13 +44,15 @@ public class CommentDto {
         private String contents;
         private Integer likes;
         private Integer dislikes;
+        private UserDto.res user;
 
-        public res(Comment comment) {
+        public res(Comment comment, User user) {
             this.answerId = comment.getAnswerId();
             this.userId = comment.getUserId();
             this.contents = comment.getContents();
             this.likes = comment.getLikes();
             this.dislikes = comment.getDislikes();
+            this.user = user.toDto();
         }
     }
 }
