@@ -81,9 +81,10 @@ public class UserDto {
         private String nickName;
         private Integer score;
         private String schoolName;
+        private Long schoolId;
 
         @Builder
-        public res(Long userId, String nickName, Integer score) {
+        public res(Long userId, String nickName, Integer score, String schoolName, Long schoolId) {
             this.userId = userId;
             this.nickName = nickName;
             this.score = score;

@@ -2,7 +2,9 @@ package cheese.cheese.service;
 
 import cheese.cheese.Advice.Exception.UserNotFoundException;
 import cheese.cheese.dto.UserDto;
+import cheese.cheese.entity.School;
 import cheese.cheese.entity.User;
+import cheese.cheese.repository.SchoolRepository;
 import cheese.cheese.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final SchoolRepository schoolRepository;
 
     public Boolean signUp(UserDto.SignUpReq signUpReq) throws Exception{
         Boolean result = false;
@@ -22,12 +25,15 @@ public class UserService {
     }
 
     public UserDto.res signIn(UserDto.loginReq loginReq) {
-        User user = userRepository.findByEmailAndPassword(loginReq.getEmail(), loginReq.getPassword())
+        User user = this.userRepository.findByEmailAndPassword(loginReq.getEmail(), loginReq.getPassword())
                 .orElseThrow(UserNotFoundException::new);
+        School school = this.schoolRepository.getById(user.getSchoolId());
         return UserDto.res.builder()
                 .userId(user.getUserId())
                 .nickName(user.getNickName())
                 .score(user.getScore())
+                .schoolId(school.getSchoolId())
+                .schoolName(school.getSchoolName())
                 .build();
     }
 
