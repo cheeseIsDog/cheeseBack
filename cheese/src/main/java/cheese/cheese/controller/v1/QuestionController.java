@@ -4,6 +4,7 @@ import cheese.cheese.dto.QuestionDto;
 import cheese.cheese.entity.Question;
 import cheese.cheese.service.QuestionService;
 import cheese.cheese.service.TagService;
+import cheese.cheese.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -20,6 +21,7 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class QuestionController {
     private final QuestionService questionService;
+    private final UserService userService;
     private final TagService tagService;
 
     @Operation(summary = "create Question", description = "학교 내 질문 생성")
@@ -34,7 +36,7 @@ public class QuestionController {
         return true;
     }
 
-    @Operation(summary = "get Question", description = "학교 내 전체 질문 쿼리")
+    @Operation(summary = "get Questions", description = "학교 내 전체 질문 쿼리")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
@@ -44,6 +46,18 @@ public class QuestionController {
     @PostMapping("/getBySchool")
     public List<QuestionDto.res> getQuestions(@RequestBody QuestionDto.req req) throws Exception {
         return this.questionService.getQuestionsBySchoolId(req);
+    }
+
+    @Operation(summary = "get Question", description = "학교 내 전체 질문 쿼리")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
+            @ApiResponse(responseCode = "404", description = "Not Found !!")
+    })
+
+    @PostMapping("/getByQuestionId")
+    public QuestionDto.res getQuestion(@RequestBody QuestionDto.reqById req) throws Exception {
+        return this.questionService.getQuestionById(req.getQuestionId());
     }
 
     @Operation(summary = "search Question By Title", description = "학교 내 질문을 제목으로 검색")

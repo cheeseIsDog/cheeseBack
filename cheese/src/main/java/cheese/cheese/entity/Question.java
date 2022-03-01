@@ -17,7 +17,6 @@ import javax.persistence.*;
 @Table(name="question")
 public class Question extends BaseTimeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long questionId;
     private Long userId;
     private Long schoolId;
@@ -39,5 +38,9 @@ public class Question extends BaseTimeEntity {
         this.likes = 0;
         this.dislikes = 0;
         this.solved_YN = YN.No;
+    }
+
+    public void setQuestionId(Long questionId) {
+        this.questionId = questionId;
     }
 }

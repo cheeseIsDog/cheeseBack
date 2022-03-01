@@ -14,7 +14,6 @@ import javax.persistence.*;
 @Table(name="school")
 public class School extends BaseTimeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="school_id")
     private Long schoolId;
 

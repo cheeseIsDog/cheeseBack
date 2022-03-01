@@ -6,6 +6,7 @@ import cheese.cheese.entity.School;
 import cheese.cheese.entity.User;
 import cheese.cheese.repository.SchoolRepository;
 import cheese.cheese.repository.UserRepository;
+import cheese.cheese.util.IdGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +15,14 @@ import org.springframework.stereotype.Service;
 public class UserService {
     private final UserRepository userRepository;
     private final SchoolRepository schoolRepository;
+    private final IdGenerator idGenerator;
 
     public Boolean signUp(UserDto.SignUpReq signUpReq) throws Exception{
         Boolean result = false;
         if (this.isNotExistedEmail(signUpReq.getEmail()) && this.isNotExistedNickName(signUpReq.getNickName())) {
-            userRepository.save(signUpReq.toEntity());
+            User user = signUpReq.toEntity();
+            user.setUserId(idGenerator.getNewId());
+            userRepository.save(user);
             result = true;
         }
         return result;
@@ -48,6 +52,18 @@ public class UserService {
         }
 
         return result;
+    }
+
+    public UserDto.res getUserInfo(Long userId)  {
+        User user = this.userRepository.findByUserId(userId).orElse(null);
+        School school = this.schoolRepository.getById(user.getSchoolId());
+        return UserDto.res.builder()
+                .userId(user.getUserId())
+                .nickName(user.getNickName())
+                .score(user.getScore())
+                .schoolId(school.getSchoolId())
+                .schoolName(school.getSchoolName())
+                .build();
     }
 
     private Boolean isNotExistedEmail(String email) {

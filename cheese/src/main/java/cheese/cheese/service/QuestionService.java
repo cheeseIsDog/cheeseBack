@@ -3,8 +3,11 @@ package cheese.cheese.service;
 import cheese.cheese.dto.Enum.Consts;
 import cheese.cheese.dto.QuestionDto;
 import cheese.cheese.entity.Question;
+import cheese.cheese.entity.User;
 import cheese.cheese.repository.QuestionRepository;
 import cheese.cheese.repository.QuestionDslRepository;
+import cheese.cheese.repository.UserRepository;
+import cheese.cheese.util.IdGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +18,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QuestionService {
     private final QuestionRepository questionRepository;
+    private final UserRepository userRepository;
     private final QuestionDslRepository questionDslRepository;
+    private final IdGenerator idGenerator;
 
     public Question create(QuestionDto.gen gen) {
         Question question = null;
         if (this.isNotExistedQuestionTitle(gen.getTitle(), gen.getSchoolId())) {
-            question = questionRepository.save(gen.toEntity());
+            question = gen.toEntity();
+            question.setQuestionId(idGenerator.getNewId());
+            question = questionRepository.save(question);
         }
         return question;
     }
@@ -28,6 +35,15 @@ public class QuestionService {
     private Boolean isNotExistedQuestionTitle(String title, Long schoolId) {
         Question question = questionRepository.findByTitleAndSchoolId(title, schoolId).orElse(null);
         return question == null;
+    }
+
+    public QuestionDto.res getQuestionById(Long questionId) {
+        Question question = this.questionRepository.findByQuestionId(questionId).orElse(null);
+        User user = this.userRepository.findByUserId(question.getUserId()).orElse(null);
+        return QuestionDto.res.builder()
+                .question(question)
+                .user(user)
+                .build();
     }
 
     public List<QuestionDto.res> getQuestionsBySchoolId(QuestionDto.req req) {

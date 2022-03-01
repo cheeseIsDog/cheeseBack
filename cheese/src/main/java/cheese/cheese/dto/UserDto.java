@@ -52,6 +52,17 @@ public class UserDto {
 
     @Getter
     @NoArgsConstructor
+    public static class userInfoReq{
+        private Long userId;
+
+        @Builder
+        public userInfoReq(Long userId){
+            this.userId = userId;
+        }
+    }
+
+    @Getter
+    @NoArgsConstructor
     public static class sendAuth {
         private String email;
 
@@ -85,6 +96,14 @@ public class UserDto {
 
         @Builder
         public res(Long userId, String nickName, Integer score, String schoolName, Long schoolId) {
+            this.userId = userId;
+            this.nickName = nickName;
+            this.score = score;
+            this.schoolName = schoolName;
+            this.schoolId = schoolId;
+        }
+
+        public res(Long userId, String nickName, Integer score) {
             this.userId = userId;
             this.nickName = nickName;
             this.score = score;

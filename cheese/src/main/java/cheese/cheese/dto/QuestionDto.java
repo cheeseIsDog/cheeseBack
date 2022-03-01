@@ -47,6 +47,14 @@ public class QuestionDto {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
+    @Builder
+    public static class reqById{
+        private Long questionId;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class searchReqByTitle{
         private Long schoolId;
         private String title;
@@ -86,6 +94,7 @@ public class QuestionDto {
         private Long duringTime;
         private YN solved_YN;
 
+        @Builder
         public res(Question question, User user) {
             this.questionId = question.getQuestionId();
             this.user = user.toDto();

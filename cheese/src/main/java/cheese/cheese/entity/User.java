@@ -2,10 +2,7 @@ package cheese.cheese.entity;
 
 import cheese.cheese.dto.UserDto;
 import cheese.cheese.entity.common.BaseTimeEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -16,7 +13,6 @@ import javax.persistence.*;
 @Table(name="user")
 public class User extends BaseTimeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="user_id")
     private Long userId;
 
@@ -46,6 +42,10 @@ public class User extends BaseTimeEntity {
         this.authNumber = authNumber;
         this.schoolId = schoolId;
         this.score = 0;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public UserDto.res toDto() {

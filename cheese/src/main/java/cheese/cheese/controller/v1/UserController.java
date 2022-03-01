@@ -52,6 +52,17 @@ public class UserController {
         return this.userService.signUp(dto);
     }
 
+    @Operation(summary = "getUserInfo", description = "유저정보 가져오")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
+            @ApiResponse(responseCode = "404", description = "Not Found !!")
+    })
+    @PostMapping("/getUserInfo")
+    public UserDto.res getUserInfo(@RequestBody UserDto.userInfoReq dto )  throws Exception{
+        return this.userService.getUserInfo(dto.getUserId());
+    }
+
     @Operation(summary = "sendMail", description = "검증 이메일 전송")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
