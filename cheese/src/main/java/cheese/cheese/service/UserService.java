@@ -46,7 +46,7 @@ public class UserService {
         }
 
         Authentication authentication = new UserAuthentication(loginReq.getEmail(), null, null);
-        String token = "Bearer " + JwtTokenProvider.generateToken(authentication);
+        String token = JwtTokenProvider.generateToken(authentication);
 
         School school = this.schoolRepository.getById(user.getSchoolId());
         return UserDto.res.builder()
