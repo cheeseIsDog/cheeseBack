@@ -93,7 +93,7 @@ public class UserDto {
         private Integer score;
         private String schoolName;
         private Long schoolId;
-        private String Authorization;
+        private String token;
 
         @Builder
         public res(Long userId, String nickName, Integer score, String schoolName, Long schoolId, String Authorization) {
@@ -102,7 +102,7 @@ public class UserDto {
             this.score = score;
             this.schoolName = schoolName;
             this.schoolId = schoolId;
-            this.Authorization = Authorization;
+            this.token = Authorization;
         }
 
         public res(Long userId, String nickName, Integer score) {
