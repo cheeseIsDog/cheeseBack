@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -26,8 +29,10 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Not Found !!")
     })
     @PostMapping("/signIn")
-    public UserDto.res signIn(@RequestBody UserDto.loginReq login) throws Exception {
-        return this.userService.signIn(login);
+    public UserDto.res signIn(
+            final HttpServletResponse res,
+            @RequestBody UserDto.loginReq login) throws Exception {
+        return this.userService.signIn(res, login);
     }
 
     @Operation(summary = "delete", description = "이메일로 유저 삭제 ( 일시 )")

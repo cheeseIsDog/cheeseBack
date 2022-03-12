@@ -106,7 +106,7 @@ public class QuestionDslRepository {
         return this.makeTagsForQuestions(result);
     }
 
-    private List<QuestionDto.res> makeTagsForQuestions(List<QuestionDto.res> result) {
+    public List<QuestionDto.res> makeTagsForQuestions(List<QuestionDto.res> result) {
         result.forEach(queryRes -> {
             List<TagMaster> tagMasters = this.jpaQueryFactory.select(tagMaster)
                     .from(tagMaster)

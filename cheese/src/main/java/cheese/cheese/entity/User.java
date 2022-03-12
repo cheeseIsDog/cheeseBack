@@ -48,6 +48,10 @@ public class User extends BaseTimeEntity {
         this.userId = userId;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public UserDto.res toDto() {
         return new UserDto.res(this.getUserId(), this.getNickName(), this.getScore());
     }

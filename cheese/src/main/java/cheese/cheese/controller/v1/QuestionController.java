@@ -48,7 +48,7 @@ public class QuestionController {
         return this.questionService.getQuestionsBySchoolId(req);
     }
 
-    @Operation(summary = "get Question", description = "학교 내 전체 질문 쿼리")
+    @Operation(summary = "get Question", description = "학교 내 특정 질문 쿼리")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),

@@ -9,12 +9,14 @@ import cheese.cheese.repository.QuestionDslRepository;
 import cheese.cheese.repository.UserRepository;
 import cheese.cheese.util.IdGenerator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class QuestionService {
     private final QuestionRepository questionRepository;
@@ -40,10 +42,14 @@ public class QuestionService {
     public QuestionDto.res getQuestionById(Long questionId) {
         Question question = this.questionRepository.findByQuestionId(questionId).orElse(null);
         User user = this.userRepository.findByUserId(question.getUserId()).orElse(null);
-        return QuestionDto.res.builder()
+        List<QuestionDto.res> listForGettingTags = new ArrayList<>();
+        QuestionDto.res res = QuestionDto.res.builder()
                 .question(question)
                 .user(user)
                 .build();
+        listForGettingTags.add(res);
+        this.questionDslRepository.makeTagsForQuestions(listForGettingTags);
+        return res;
     }
 
     public List<QuestionDto.res> getQuestionsBySchoolId(QuestionDto.req req) {

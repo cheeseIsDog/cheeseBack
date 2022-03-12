@@ -16,4 +16,6 @@ public final class Consts {
             + "</div>";
 
     public static final String BLANK = "";
+
+    public static final String FAIL_LOGIN = "FAIL_LOGIN";
 }
