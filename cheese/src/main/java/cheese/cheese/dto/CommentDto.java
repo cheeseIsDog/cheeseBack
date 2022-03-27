@@ -50,8 +50,6 @@ public class CommentDto {
             this.answerId = comment.getAnswerId();
             this.userId = comment.getUserId();
             this.contents = comment.getContents();
-            this.likes = comment.getLikes();
-            this.dislikes = comment.getDislikes();
             this.user = user.toDto();
         }
     }

@@ -23,10 +23,6 @@ public class Question extends BaseTimeEntity {
     private String title;
     private String contents;
     @Column(columnDefinition = "integer default 0")
-    private Integer likes;
-    @Column(columnDefinition = "integer default 0")
-    private Integer dislikes;
-    @Column(columnDefinition = "integer default 0")
     private Integer view;
     @Enumerated(EnumType.STRING)
     private YN solved_YN;
@@ -37,8 +33,6 @@ public class Question extends BaseTimeEntity {
         this.schoolId = schoolId;
         this.title = title;
         this.contents = contents;
-        this.likes = 0;
-        this.dislikes = 0;
         this.view = 0;
         this.solved_YN = YN.No;
     }

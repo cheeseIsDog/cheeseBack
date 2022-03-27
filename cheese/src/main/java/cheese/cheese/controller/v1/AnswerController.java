@@ -38,7 +38,18 @@ public class AnswerController {
             @ApiResponse(responseCode = "404", description = "Not Found !!")
     })
     @PostMapping("/list")
-    public List<AnswerDto.res> ofQuesiton(@RequestBody AnswerDto.req res) throws Exception {
+    public List<AnswerDto.res> ofQuestion(@RequestBody AnswerDto.req res) throws Exception {
         return this.answerService.ofQuestion(res.getQuestionId());
+    }
+
+    @Operation(summary = "choose as right answer", description = "답변 채택")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
+            @ApiResponse(responseCode = "404", description = "Not Found !!")
+    })
+    @PostMapping("/chooseAsRightAnswer")
+    public Boolean chooseAsRightAnswer(@RequestBody AnswerDto.chooseAnswer choose) throws Exception {
+        return this.answerService.chooseAsRightAnswer(choose);
     }
 }

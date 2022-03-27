@@ -9,11 +9,10 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Table(name="answer")
-public class Answer extends BaseTimeEntity {
+@Table(name="answer_like_dislike")
+public class AnswerLikeDislike extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="answer_id")
@@ -22,16 +21,17 @@ public class Answer extends BaseTimeEntity {
     @Column(name="user_id")
     private Long userId;
 
-    @Column(name="question_id")
-    private Long questionId;
+    @Column(name="likes")
+    private Boolean likes;
 
-    @Column(name="contents")
-    private String contents;
+    @Column(name="dislikes")
+    private Boolean dislikes;
 
     @Builder
-    public Answer(Long userId, Long questionId, String contents) {
+    public AnswerLikeDislike(Long userId, Long answerId, Boolean likes, Boolean dislikes) {
         this.userId = userId;
-        this.questionId = questionId;
-        this.contents = contents;
+        this.answerId = answerId;
+        this.likes = likes;
+        this.dislikes = dislikes;
     }
 }

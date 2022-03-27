@@ -9,29 +9,23 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Table(name="answer")
-public class Answer extends BaseTimeEntity {
+@Table(name="answer_choose")
+public class AnswerChoose extends BaseTimeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="answer_id")
     private Long answerId;
 
     @Column(name="user_id")
     private Long userId;
 
-    @Column(name="question_id")
-    private Long questionId;
-
-    @Column(name="contents")
-    private String contents;
+    private Boolean choose;
 
     @Builder
-    public Answer(Long userId, Long questionId, String contents) {
+    public AnswerChoose(Long userId, Long answerId) {
         this.userId = userId;
-        this.questionId = questionId;
-        this.contents = contents;
+        this.answerId = answerId;
+        this.choose = true;
     }
 }

@@ -1,6 +1,7 @@
 package cheese.cheese.dto;
 
 import cheese.cheese.entity.Answer;
+import cheese.cheese.entity.AnswerChoose;
 import cheese.cheese.entity.Comment;
 import cheese.cheese.entity.User;
 import lombok.AllArgsConstructor;
@@ -40,6 +41,29 @@ public class AnswerDto {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
+    public static class chooseAnswer{
+        private Long answerId;
+        private Long userId;
+
+        public AnswerChoose toEntity() {
+            return AnswerChoose.builder()
+                    .answerId(this.answerId)
+                    .userId(this.userId)
+                    .build();
+        }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class modifyChooseAnswer{
+        private Long answerId;
+        private Long userId;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
     @Builder
     public static class res{
         private Long answerId;
@@ -54,8 +78,6 @@ public class AnswerDto {
             this.answerId = answer.getAnswerId();
             this.userId = answer.getUserId();
             this.contents = answer.getContents();
-            this.likes = answer.getLikes();
-            this.dislikes = answer.getDislikes();
             this.user = user.toDto();
         }
     }

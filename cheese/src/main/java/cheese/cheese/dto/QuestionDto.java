@@ -101,8 +101,6 @@ public class QuestionDto {
             this.schoolId = question.getSchoolId();
             this.title = question.getTitle();
             this.contents = question.getContents();
-            this.likes = question.getLikes();
-            this.dislikes = question.getDislikes();
             this.duringTime = Duration.between(question.getCreatedDate(), LocalDateTime.now()).getSeconds();
             this.solved_YN = question.getSolved_YN();
         }

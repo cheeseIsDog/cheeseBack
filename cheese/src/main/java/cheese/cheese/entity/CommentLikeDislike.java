@@ -9,23 +9,23 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Table(name="comment")
-public class Comment extends BaseTimeEntity {
+@Table(name="comment_like_dislike")
+public class CommentLikeDislike extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="comment_id")
     private Long commentId;
-    private Long answerId;
     private Long userId;
-    private String contents;
+    private Boolean likes;
+    private Boolean dislikes;
 
     @Builder
-    public Comment(Long answerId, Long userId, String contents) {
-        this.answerId = answerId;
+    public CommentLikeDislike(Long commentId, Long userId, Boolean likes, Boolean dislikes) {
+        this.commentId = commentId;
         this.userId = userId;
-        this.contents = contents;
+        this.likes = likes;
+        this.dislikes = dislikes;
     }
 }
