@@ -2,6 +2,7 @@ package cheese.cheese.service;
 
 import cheese.cheese.dto.AnswerDto;
 import cheese.cheese.entity.Answer;
+import cheese.cheese.entity.AnswerChoose;
 import cheese.cheese.repository.AnswerChooseRepository;
 import cheese.cheese.repository.AnswerDslRepository;
 import cheese.cheese.repository.AnswerRepository;
@@ -40,10 +41,11 @@ public class AnswerService {
         return true;
     }
 
-    public Boolean modifyAnswerChoiceState(Long answerId) {
+    public Boolean modifyAnswerChoiceState(AnswerDto.modifyChooseAnswer choose) {
         try {
-            Answer answer = this.answerRepository.getById(answerId);
-            this.answerRepository.save(answer);
+            AnswerChoose answerChoose = this.answerChooseRepository.getById(choose.getAnswerId());
+            answerChoose.changeState();
+            this.answerChooseRepository.save(answerChoose);
         } catch (Exception e) {
             return false;
         }

@@ -52,4 +52,15 @@ public class AnswerController {
     public Boolean chooseAsRightAnswer(@RequestBody AnswerDto.chooseAnswer choose) throws Exception {
         return this.answerService.chooseAsRightAnswer(choose);
     }
+
+    @Operation(summary = "modify answer state", description = "답변 채택 상태 변경")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
+            @ApiResponse(responseCode = "404", description = "Not Found !!")
+    })
+    @PostMapping("/modifyAnswerChoiceState")
+    public Boolean modifyAnswerChoiceState(@RequestBody AnswerDto.modifyChooseAnswer choose) throws Exception {
+        return this.answerService.modifyAnswerChoiceState(choose);
+    }
 }

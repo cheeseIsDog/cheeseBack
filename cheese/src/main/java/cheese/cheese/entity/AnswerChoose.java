@@ -28,4 +28,8 @@ public class AnswerChoose extends BaseTimeEntity {
         this.answerId = answerId;
         this.choose = true;
     }
+
+    public void changeState() {
+        this.choose = !this.choose;
+    }
 }
