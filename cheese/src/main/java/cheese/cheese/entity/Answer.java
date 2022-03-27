@@ -34,6 +34,8 @@ public class Answer extends BaseTimeEntity {
     @Column(name="dislikes")
     private Integer dislikes;
 
+    private Integer solved;
+
     @Builder
     public Answer(Long userId, Long questionId, String contents) {
         this.userId = userId;
