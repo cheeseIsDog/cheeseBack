@@ -2,7 +2,6 @@ package cheese.cheese.repository;
 
 import cheese.cheese.dto.AnswerDto;
 import cheese.cheese.dto.CommentDto;
-import cheese.cheese.dto.QuestionDto;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +15,7 @@ import static cheese.cheese.entity.QComment.comment;
 import static cheese.cheese.entity.QUser.user;
 import static cheese.cheese.entity.QAnswer.answer;
 import static cheese.cheese.entity.QAnswerChoose.answerChoose;
+import static cheese.cheese.entity.QAnswerLikeDislike.answerLikeDislike;
 
 @Slf4j
 @Repository
@@ -38,6 +38,16 @@ public class AnswerDslRepository {
                 .leftJoin(answerChoose).on(answerChoose.answerId.eq(answer.answerId))
                 .fetch();
         resList.forEach(res -> {
+            List<AnswerDto.answerLikeDislike> answerLikeDislikeList = this.jpaQueryFactory.select(
+                            Projections.constructor(
+                                    AnswerDto.answerLikeDislike.class,
+                                    answerLikeDislike
+                            )
+                    )
+                    .from(answerLikeDislike)
+                    .where(answerLikeDislike.answerId.eq(res.getAnswerId()))
+                    .fetch();
+            res.setLikesDislikes(answerLikeDislikeList);
             List<CommentDto.res> commentRes = this.jpaQueryFactory.select(
                             Projections.constructor(
                                     CommentDto.res.class,

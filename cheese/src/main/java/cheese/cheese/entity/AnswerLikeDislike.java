@@ -34,4 +34,14 @@ public class AnswerLikeDislike extends BaseTimeEntity {
         this.likes = likes;
         this.dislikes = dislikes;
     }
+
+    public void changeState() {
+        if (this.likes) {
+            this.likes = false;
+            this.dislikes = true;
+        } else {
+            this.likes = true;
+            this.dislikes = false;
+        }
+    }
 }

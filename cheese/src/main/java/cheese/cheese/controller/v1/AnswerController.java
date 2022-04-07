@@ -52,4 +52,26 @@ public class AnswerController {
     public Boolean chooseAsRightAnswer(@RequestBody AnswerDto.chooseAnswer choose) throws Exception {
         return this.answerService.chooseAsRightAnswer(choose);
     }
+
+    @Operation(summary = "createAnswerLikeDislike", description = "답변 좋아요 여부 생성")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
+            @ApiResponse(responseCode = "404", description = "Not Found !!")
+    })
+    @PostMapping("/createAnswerLikeDislike")
+    public Boolean createAnswerLikeDislike(@RequestBody AnswerDto.answerLikeDislike answerLikeDislike) throws Exception {
+        return this.answerService.createAnswerLikeDislike(answerLikeDislike);
+    }
+
+    @Operation(summary = "updateAnswerLikeDislike", description = "답변 좋아요 여부 수정")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
+            @ApiResponse(responseCode = "404", description = "Not Found !!")
+    })
+    @PostMapping("/updateAnswerLikeDislike")
+    public Boolean updateAnswerLikeDislike(@RequestBody AnswerDto.answerLikeDislike answerLikeDislike) throws Exception {
+        return this.answerService.updateAnswerLikeDislike(answerLikeDislike);
+    }
 }

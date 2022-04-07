@@ -1,9 +1,6 @@
 package cheese.cheese.dto;
 
-import cheese.cheese.entity.Answer;
-import cheese.cheese.entity.AnswerChoose;
-import cheese.cheese.entity.Comment;
-import cheese.cheese.entity.User;
+import cheese.cheese.entity.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -56,9 +53,20 @@ public class AnswerDto {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class modifyChooseAnswer{
+    public static class answerLikeDislike{
         private Long answerId;
         private Long userId;
+        private Boolean like;
+        private Boolean dislike;
+
+        public AnswerLikeDislike toEntity() {
+            return AnswerLikeDislike.builder()
+                    .answerId(this.answerId)
+                    .userId(this.userId)
+                    .likes(this.like)
+                    .dislikes(this.dislike)
+                    .build();
+        }
     }
 
     @Getter
@@ -69,8 +77,8 @@ public class AnswerDto {
         private Long answerId;
         private Long userId;
         private String contents;
-        private Integer likes;
-        private Integer dislikes;
+        private Integer likes = 0;
+        private Integer dislikes = 0;
         private Boolean isChosen;
         private UserDto.res user;
         private List<CommentDto.res> comments = new ArrayList<>();
@@ -81,6 +89,16 @@ public class AnswerDto {
             this.isChosen = answerChoose != null;
             this.contents = answer.getContents();
             this.user = user.toDto();
+        }
+
+        public void setLikesDislikes(List<AnswerDto.answerLikeDislike> list) {
+            list.forEach(dto -> {
+                if (dto.getLike()) {
+                    this.likes++;
+                } else {
+                    this.dislikes++;
+                }
+            });
         }
     }
 }
