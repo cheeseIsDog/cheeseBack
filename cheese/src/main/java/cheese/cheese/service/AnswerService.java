@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,17 +36,6 @@ public class AnswerService {
     public Boolean chooseAsRightAnswer(AnswerDto.chooseAnswer choose) {
         try {
             this.answerChooseRepository.save(choose.toEntity());
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
-    }
-
-    public Boolean modifyAnswerChoiceState(AnswerDto.modifyChooseAnswer choose) {
-        try {
-            AnswerChoose answerChoose = this.answerChooseRepository.getById(choose.getAnswerId());
-            answerChoose.changeState();
-            this.answerChooseRepository.save(answerChoose);
         } catch (Exception e) {
             return false;
         }
