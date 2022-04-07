@@ -15,6 +15,7 @@ import java.util.List;
 import static cheese.cheese.entity.QComment.comment;
 import static cheese.cheese.entity.QUser.user;
 import static cheese.cheese.entity.QAnswer.answer;
+import static cheese.cheese.entity.QAnswerChoose.answerChoose;
 
 @Slf4j
 @Repository
@@ -27,12 +28,14 @@ public class AnswerDslRepository {
                         Projections.constructor(
                                 AnswerDto.res.class,
                                 answer,
+                                answerChoose,
                                 user
                         )
                 )
                 .from(answer)
                 .where(answer.questionId.eq(questionId))
                 .leftJoin(user).on(user.userId.eq(answer.userId))
+                .leftJoin(answerChoose).on(answerChoose.answerId.eq(answer.answerId))
                 .fetch();
         resList.forEach(res -> {
             List<CommentDto.res> commentRes = this.jpaQueryFactory.select(

@@ -30,7 +30,7 @@ public class AnswerService {
     }
 
     public List<AnswerDto.res> ofQuestion(Long questionId) {
-        return answerDslRepository.ofQuestion(questionId);
+        return this.answerDslRepository.ofQuestion(questionId);
     }
 
     public Boolean chooseAsRightAnswer(AnswerDto.chooseAnswer choose) {

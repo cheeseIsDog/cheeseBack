@@ -71,12 +71,14 @@ public class AnswerDto {
         private String contents;
         private Integer likes;
         private Integer dislikes;
+        private Boolean isChosen;
         private UserDto.res user;
         private List<CommentDto.res> comments = new ArrayList<>();
 
-        public res(Answer answer, User user) {
+        public res(Answer answer, AnswerChoose answerChoose, User user) {
             this.answerId = answer.getAnswerId();
             this.userId = answer.getUserId();
+            this.isChosen = answerChoose != null;
             this.contents = answer.getContents();
             this.user = user.toDto();
         }
