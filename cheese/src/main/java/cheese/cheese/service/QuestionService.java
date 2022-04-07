@@ -1,9 +1,13 @@
 package cheese.cheese.service;
 
+import cheese.cheese.dto.AnswerDto;
 import cheese.cheese.dto.Enum.Consts;
 import cheese.cheese.dto.QuestionDto;
+import cheese.cheese.entity.AnswerLikeDislike;
 import cheese.cheese.entity.Question;
+import cheese.cheese.entity.QuestionLikeDislike;
 import cheese.cheese.entity.User;
+import cheese.cheese.repository.QuestionLikeDislikeRepository;
 import cheese.cheese.repository.QuestionRepository;
 import cheese.cheese.repository.QuestionDslRepository;
 import cheese.cheese.repository.UserRepository;
@@ -21,6 +25,7 @@ import java.util.List;
 public class QuestionService {
     private final QuestionRepository questionRepository;
     private final UserRepository userRepository;
+    private final QuestionLikeDislikeRepository questionLikeDislikeRepository;
     private final QuestionDslRepository questionDslRepository;
     private final IdGenerator idGenerator;
 
@@ -76,5 +81,30 @@ public class QuestionService {
 
     public QuestionDto.resOfSchoolQuestions getQuestionsOfSchoolInfo(Long schoolId) {
         return this.questionDslRepository.getQuestionsOfSchoolInfo(schoolId);
+    }
+
+    public Boolean createQuestionLikeDislike(QuestionDto.questionLikeDislike questionLikeDislike) {
+        Boolean result = true;
+        try {
+            this.questionLikeDislikeRepository.save(questionLikeDislike.toEntity());
+        } catch (Exception e) {
+            result = false;
+        }
+        return result;
+    }
+
+    public Boolean updateQuestionLikeDislike(QuestionDto.questionLikeDislike questionLikeDislikeDto) {
+        Boolean result = true;
+        try {
+            QuestionLikeDislike questionLikeDislike = this.questionLikeDislikeRepository
+                    .getByQuestionIdAndUserId(
+                            questionLikeDislikeDto.getQuestionId(),
+                            questionLikeDislikeDto.getUserId()
+                    );
+            questionLikeDislike.changeState();
+        } catch (Exception e) {
+            result = false;
+        }
+        return result;
     }
 }

@@ -1,7 +1,6 @@
 package cheese.cheese.controller.v1;
 
 import cheese.cheese.dto.QuestionDto;
-import cheese.cheese.entity.Question;
 import cheese.cheese.service.QuestionService;
 import cheese.cheese.service.TagService;
 import cheese.cheese.service.UserService;
@@ -105,5 +104,27 @@ public class QuestionController {
     @PostMapping("/getInfoBySchool")
     public QuestionDto.resOfSchoolQuestions getQuestionsOfSchoolInfo(@RequestBody QuestionDto.reqOfSchoolQuestions req) throws Exception {
         return this.questionService.getQuestionsOfSchoolInfo(req.getSchoolId());
+    }
+
+    @Operation(summary = "createQuestionLikeDislike", description = "질문 좋아요 여부 생성")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
+            @ApiResponse(responseCode = "404", description = "Not Found !!")
+    })
+    @PostMapping("/createQuestionLikeDislike")
+    public Boolean createQuestionLikeDislike(@RequestBody QuestionDto.questionLikeDislike questionLikeDislike) throws Exception {
+        return this.questionService.createQuestionLikeDislike(questionLikeDislike);
+    }
+
+    @Operation(summary = "updateQuestionLikeDislike", description = "질문 좋아요 여부 수정")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
+            @ApiResponse(responseCode = "404", description = "Not Found !!")
+    })
+    @PostMapping("/updateQuestionLikeDislike")
+    public Boolean updateQuestionLikeDislike(@RequestBody QuestionDto.questionLikeDislike questionLikeDislike) throws Exception {
+        return this.questionService.updateQuestionLikeDislike(questionLikeDislike);
     }
 }

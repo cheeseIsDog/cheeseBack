@@ -29,4 +29,14 @@ public class QuestionLikeDislike extends BaseTimeEntity {
     public void setQuestionId(Long questionId) {
         this.questionId = questionId;
     }
+
+    public void changeState() {
+        if (this.likes) {
+            this.likes = false;
+            this.dislikes = true;
+        } else {
+            this.likes = true;
+            this.dislikes = false;
+        }
+    }
 }

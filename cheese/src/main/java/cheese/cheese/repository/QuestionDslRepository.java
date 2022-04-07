@@ -1,5 +1,6 @@
 package cheese.cheese.repository;
 
+import cheese.cheese.dto.AnswerDto;
 import cheese.cheese.dto.Enum.YN;
 import cheese.cheese.dto.QuestionDto;
 import cheese.cheese.dto.TagDto;
@@ -17,7 +18,7 @@ import static cheese.cheese.entity.QQuestion.question;
 import static cheese.cheese.entity.QUser.user;
 import static cheese.cheese.entity.QTagMaster.tagMaster;
 import static cheese.cheese.entity.QTagWord.tagWord;
-
+import static cheese.cheese.entity.QQuestionLikeDislike.questionLikeDislike;
 
 
 @Slf4j
@@ -87,7 +88,7 @@ public class QuestionDslRepository {
                     result.addAll(this.getQuestion(target));
         });
 
-        return result;
+        return this.getQuestionLikeDislike(result);
     }
 
     private List<QuestionDto.res> getQuestion(Long questionId) {
@@ -122,6 +123,25 @@ public class QuestionDslRepository {
                 }
             });
         });
+        result = this.getQuestionLikeDislike(result);
+
+        return result;
+    }
+
+    private List<QuestionDto.res> getQuestionLikeDislike(List<QuestionDto.res> result) {
+        result.forEach(queryRes -> {
+            List<QuestionDto.questionLikeDislike> questionLikeDislikeList = this.jpaQueryFactory.select(
+                            Projections.constructor(
+                                    QuestionDto.questionLikeDislike.class,
+                                    questionLikeDislike
+                            )
+                    )
+                    .from(questionLikeDislike)
+                    .where(questionLikeDislike.questionId.eq(queryRes.getQuestionId()))
+                    .fetch();
+            queryRes.setLikesDislikes(questionLikeDislikeList);
+        });
+
         return result;
     }
 

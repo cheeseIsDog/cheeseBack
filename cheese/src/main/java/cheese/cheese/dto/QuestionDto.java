@@ -3,6 +3,7 @@ package cheese.cheese.dto;
 
 import cheese.cheese.dto.Enum.YN;
 import cheese.cheese.entity.Question;
+import cheese.cheese.entity.QuestionLikeDislike;
 import cheese.cheese.entity.User;
 import lombok.*;
 
@@ -81,6 +82,25 @@ public class QuestionDto {
     }
 
     @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class questionLikeDislike{
+        private Long questionId;
+        private Long userId;
+        private Boolean like;
+        private Boolean dislike;
+
+        public QuestionLikeDislike toEntity() {
+            return QuestionLikeDislike.builder()
+                    .questionId(this.questionId)
+                    .userId(this.userId)
+                    .likes(this.like)
+                    .dislikes(this.dislike)
+                    .build();
+        }
+    }
+
+    @Getter
     @NoArgsConstructor
     public static class res{
         private Long questionId;
@@ -103,6 +123,16 @@ public class QuestionDto {
             this.contents = question.getContents();
             this.duringTime = Duration.between(question.getCreatedDate(), LocalDateTime.now()).getSeconds();
             this.solved_YN = question.getSolved_YN();
+        }
+
+        public void setLikesDislikes(List<QuestionDto.questionLikeDislike> list) {
+            list.forEach(dto -> {
+                if (dto.getLike()) {
+                    this.likes++;
+                } else {
+                    this.dislikes++;
+                }
+            });
         }
     }
 
