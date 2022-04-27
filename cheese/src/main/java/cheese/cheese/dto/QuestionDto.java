@@ -87,15 +87,22 @@ public class QuestionDto {
     public static class questionLikeDislike{
         private Long questionId;
         private Long userId;
-        private Boolean like;
-        private Boolean dislike;
+        private Boolean likes;
+        private Boolean dislikes;
+
+        public questionLikeDislike(QuestionLikeDislike questionLikeDislike) {
+            this.questionId = questionLikeDislike.getQuestionId();
+            this.userId = questionLikeDislike.getQuestionId();
+            this.likes = questionLikeDislike.getLikes();
+            this.dislikes = questionLikeDislike.getDislikes();
+        }
 
         public QuestionLikeDislike toEntity() {
             return QuestionLikeDislike.builder()
                     .questionId(this.questionId)
                     .userId(this.userId)
-                    .likes(this.like)
-                    .dislikes(this.dislike)
+                    .likes(this.likes)
+                    .dislikes(this.dislikes)
                     .build();
         }
     }
@@ -109,8 +116,8 @@ public class QuestionDto {
         private String title;
         private String contents;
         private List<TagDto.res> tagList = new ArrayList<>();
-        private Integer likes;
-        private Integer dislikes;
+        private Integer likes = 0;
+        private Integer dislikes = 0;
         private Long duringTime;
         private YN solved_YN;
 
@@ -126,8 +133,9 @@ public class QuestionDto {
         }
 
         public void setLikesDislikes(List<QuestionDto.questionLikeDislike> list) {
+
             list.forEach(dto -> {
-                if (dto.getLike()) {
+                if (dto.getLikes()) {
                     this.likes++;
                 } else {
                     this.dislikes++;
