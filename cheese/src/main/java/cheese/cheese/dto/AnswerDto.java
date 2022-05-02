@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,6 +90,8 @@ public class AnswerDto {
         private Boolean isChosen;
         private UserDto.res user;
         private List<CommentDto.res> comments = new ArrayList<>();
+        private LocalDateTime createdDate;
+        private LocalDateTime modifiedDate;
 
         public res(Answer answer, AnswerChoose answerChoose, User user) {
             this.answerId = answer.getAnswerId();
@@ -96,6 +99,8 @@ public class AnswerDto {
             this.isChosen = answerChoose != null;
             this.contents = answer.getContents();
             this.user = user.toDto();
+            this.createdDate = answer.getCreatedDate();
+            this.modifiedDate = answer.getModifiedDate();
         }
 
         public void setLikesDislikes(List<AnswerDto.answerLikeDislike> list) {

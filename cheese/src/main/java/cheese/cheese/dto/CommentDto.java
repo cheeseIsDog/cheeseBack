@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 public class CommentDto {
 
     @Getter
@@ -45,12 +47,16 @@ public class CommentDto {
         private Integer likes;
         private Integer dislikes;
         private UserDto.res user;
+        private LocalDateTime createdDate;
+        private LocalDateTime modifiedDate;
 
         public res(Comment comment, User user) {
             this.answerId = comment.getAnswerId();
             this.userId = comment.getUserId();
             this.contents = comment.getContents();
             this.user = user.toDto();
+            this.createdDate = comment.getCreatedDate();
+            this.modifiedDate = comment.getModifiedDate();
         }
     }
 }

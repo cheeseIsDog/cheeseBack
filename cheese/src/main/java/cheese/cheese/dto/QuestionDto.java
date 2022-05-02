@@ -120,6 +120,8 @@ public class QuestionDto {
         private Integer dislikes = 0;
         private Long duringTime;
         private YN solved_YN;
+        private LocalDateTime createdDate;
+        private LocalDateTime modifiedDate;
 
         @Builder
         public res(Question question, User user) {
@@ -130,6 +132,8 @@ public class QuestionDto {
             this.contents = question.getContents();
             this.duringTime = Duration.between(question.getCreatedDate(), LocalDateTime.now()).getSeconds();
             this.solved_YN = question.getSolved_YN();
+            this.createdDate = question.getCreatedDate();
+            this.modifiedDate = question.getModifiedDate();
         }
 
         public void setLikesDislikes(List<QuestionDto.questionLikeDislike> list) {
