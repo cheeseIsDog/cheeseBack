@@ -20,6 +20,9 @@ public class School extends BaseTimeEntity {
     @Column(name="school_name")
     private String schoolName;
 
+    @Column(name="school_email_postfix")
+    private String schoolEmailPostfix;
+
     @Column(name="score")
     private Integer score;
 }

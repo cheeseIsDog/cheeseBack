@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface SchoolRepository extends JpaRepository<School, Long> {
     List<School> findAll();
-    Optional<School> getBySchoolId(Long schoolId);
+    List<School> findBySchoolNameContains(String schoolName);
 }

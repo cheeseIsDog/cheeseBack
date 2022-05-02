@@ -18,4 +18,6 @@ public final class Consts {
     public static final String BLANK = "";
 
     public static final String FAIL_LOGIN = "FAIL_LOGIN";
+
+    public static final String UNIVERSE_POSTFIX = "대";
 }

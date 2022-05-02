@@ -20,14 +20,25 @@ import java.util.List;
 public class SchoolController {
     private final SchoolService schoolService;
 
-    @Operation(summary = "학교 리스트", description = "전체 학교 리스트를 가져온다.")
+    @Operation(summary = "전체 학교 리스트", description = "전체 학교 리스트를 가져온다.")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
             @ApiResponse(responseCode = "404", description = "Not Found !!")
     })
-    @PostMapping("list")
+    @PostMapping("allSchoolList")
     public List<SchoolDto.res> getSchoolList() throws Exception {
         return this.schoolService.getSchoolList();
+    }
+
+    @Operation(summary = "검색한 학교 리스트", description = "검색 결과 학교 리스트를 가져온다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
+            @ApiResponse(responseCode = "404", description = "Not Found !!")
+    })
+    @PostMapping("listBySearching")
+    public List<SchoolDto.res> searchSchool(@RequestBody SchoolDto.req req) throws Exception {
+        return this.schoolService.searchSchoolList(req);
     }
 }
