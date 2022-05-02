@@ -1,6 +1,5 @@
 package cheese.cheese.repository;
 
-import cheese.cheese.dto.AnswerDto;
 import cheese.cheese.dto.Enum.YN;
 import cheese.cheese.dto.QuestionDto;
 import cheese.cheese.dto.TagDto;

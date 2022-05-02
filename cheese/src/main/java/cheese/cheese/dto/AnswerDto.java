@@ -59,6 +59,13 @@ public class AnswerDto {
         private Boolean like;
         private Boolean dislike;
 
+        public answerLikeDislike(AnswerLikeDislike answerLikeDislike) {
+            this.answerId = answerLikeDislike.getAnswerId();
+            this.userId = answerLikeDislike.getUserId();
+            this.like = answerLikeDislike.getLikes();
+            this.dislike = answerLikeDislike.getDislikes();
+        }
+
         public AnswerLikeDislike toEntity() {
             return AnswerLikeDislike.builder()
                     .answerId(this.answerId)
