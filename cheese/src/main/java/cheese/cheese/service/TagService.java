@@ -24,7 +24,10 @@ public class TagService {
 
     public void saveTags(QuestionDto.gen gen, Question question) {
         gen.getTags().forEach(tag -> {
-            TagWord tagWord = this.tagWordRepository.save(new TagWord(tag));
+            TagWord tagWord = this.tagWordRepository.getByTagName(tag);
+            if(tagWord == null) {
+                tagWord = this.tagWordRepository.save(new TagWord(tag));
+            }
             TagMaster tagMaster = TagMaster.builder()
                     .questionId(question.getQuestionId())
                     .schoolId(question.getSchoolId())

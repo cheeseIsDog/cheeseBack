@@ -3,7 +3,6 @@ package cheese.cheese.controller.v1;
 import cheese.cheese.dto.QuestionDto;
 import cheese.cheese.service.QuestionService;
 import cheese.cheese.service.TagService;
-import cheese.cheese.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -20,7 +19,6 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class QuestionController {
     private final QuestionService questionService;
-    private final UserService userService;
     private final TagService tagService;
 
     @Operation(summary = "create Question", description = "학교 내 질문 생성")
