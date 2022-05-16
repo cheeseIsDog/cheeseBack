@@ -6,4 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AnswerLikeDislikeRepository extends JpaRepository<AnswerLikeDislike, Long> {
     AnswerLikeDislike getByAnswerIdAndUserId(Long answerId, Long userId);
+    AnswerLikeDislike getByAnswerId(Long answerId);
 }

@@ -2,6 +2,7 @@ package cheese.cheese.service;
 
 import cheese.cheese.dto.AnswerDto;
 import cheese.cheese.dto.Enum.Consts;
+import cheese.cheese.dto.Enum.YN;
 import cheese.cheese.dto.QuestionDto;
 import cheese.cheese.entity.AnswerLikeDislike;
 import cheese.cheese.entity.Question;
@@ -34,7 +35,7 @@ public class QuestionService {
         if (this.isNotExistedQuestionTitle(gen.getTitle(), gen.getSchoolId())) {
             question = gen.toEntity();
             question.setQuestionId(idGenerator.getNewId());
-            question = questionRepository.save(question);
+            question = this.questionRepository.save(question);
         }
         return question;
     }
@@ -58,7 +59,17 @@ public class QuestionService {
     }
 
     public List<QuestionDto.res> getQuestionsBySchoolId(QuestionDto.req req) {
-        return questionDslRepository.getQuestionsWithTag(req);
+        List<QuestionDto.res> result = this.questionDslRepository.getQuestionsWithTag(req);
+        result.forEach(res -> {
+            QuestionLikeDislike questionLikeDislike = this.questionLikeDislikeRepository
+                    .getByQuestionId(res.getQuestionId());
+            if (questionLikeDislike != null) {
+                res.setUserLikeDislikeAction(YN.Yes);
+            } else {
+                res.setUserLikeDislikeAction(YN.No);
+            }
+        });
+        return result;
     }
 
     public List<QuestionDto.res> searchQuestionsByTitle(QuestionDto.searchReqByTitle req) {
@@ -101,7 +112,11 @@ public class QuestionService {
                             questionLikeDislikeDto.getQuestionId(),
                             questionLikeDislikeDto.getUserId()
                     );
-            questionLikeDislike.changeState();
+            if (questionLikeDislike != null) {
+                questionLikeDislike.changeState();
+            } else {
+                this.questionLikeDislikeRepository.save(questionLikeDislikeDto.toEntity());
+            }
         } catch (Exception e) {
             result = false;
         }

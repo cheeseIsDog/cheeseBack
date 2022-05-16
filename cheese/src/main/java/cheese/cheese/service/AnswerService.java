@@ -1,6 +1,7 @@
 package cheese.cheese.service;
 
 import cheese.cheese.dto.AnswerDto;
+import cheese.cheese.dto.Enum.YN;
 import cheese.cheese.entity.AnswerLikeDislike;
 import cheese.cheese.repository.AnswerChooseRepository;
 import cheese.cheese.repository.AnswerDslRepository;
@@ -30,7 +31,17 @@ public class AnswerService {
     }
 
     public List<AnswerDto.res> ofQuestion(Long questionId) {
-        return this.answerDslRepository.ofQuestion(questionId);
+        List<AnswerDto.res> result = this.answerDslRepository.ofQuestion(questionId);
+        result.forEach(res -> {
+            AnswerLikeDislike answerLikeDislike = this.answerLikeDislikeRepository
+                    .getByAnswerId(res.getAnswerId());
+            if (answerLikeDislike != null) {
+                res.setUserLikeDislikeAction(YN.Yes);
+            } else {
+                res.setUserLikeDislikeAction(YN.No);
+            }
+        });
+        return result;
     }
 
     public Boolean chooseAsRightAnswer(AnswerDto.chooseAnswer choose) {
@@ -60,7 +71,11 @@ public class AnswerService {
                             answerLikeDislikeDto.getAnswerId(),
                             answerLikeDislikeDto.getUserId()
                     );
-            answerLikeDislike.changeState();
+            if (answerLikeDislike != null) {
+                answerLikeDislike.changeState();
+            } else {
+                this.answerLikeDislikeRepository.save(answerLikeDislikeDto.toEntity());
+            }
         } catch (Exception e) {
             result = false;
         }

@@ -1,5 +1,6 @@
 package cheese.cheese.dto;
 
+import cheese.cheese.dto.Enum.YN;
 import cheese.cheese.entity.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -88,6 +89,7 @@ public class AnswerDto {
         private Integer likes = 0;
         private Integer dislikes = 0;
         private Boolean isChosen;
+        private YN userLikeDislikeAction;
         private UserDto.res user;
         private List<CommentDto.res> comments = new ArrayList<>();
         private LocalDateTime createdDate;
@@ -101,6 +103,10 @@ public class AnswerDto {
             this.user = user.toDto();
             this.createdDate = answer.getCreatedDate();
             this.modifiedDate = answer.getModifiedDate();
+        }
+
+        public void setUserLikeDislikeAction(YN yn){
+            this.userLikeDislikeAction = yn;
         }
 
         public void setLikesDislikes(List<AnswerDto.answerLikeDislike> list) {

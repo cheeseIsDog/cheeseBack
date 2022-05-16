@@ -118,6 +118,7 @@ public class QuestionDto {
         private List<TagDto.res> tagList = new ArrayList<>();
         private Integer likes = 0;
         private Integer dislikes = 0;
+        private YN userLikeDislikeAction;
         private Long duringTime;
         private YN solved_YN;
         private LocalDateTime createdDate;
@@ -134,6 +135,10 @@ public class QuestionDto {
             this.solved_YN = question.getSolved_YN();
             this.createdDate = question.getCreatedDate();
             this.modifiedDate = question.getModifiedDate();
+        }
+
+        public void setUserLikeDislikeAction(YN yn) {
+            this.userLikeDislikeAction = yn;
         }
 
         public void setLikesDislikes(List<QuestionDto.questionLikeDislike> list) {

@@ -118,7 +118,7 @@ public class QuestionDslRepository {
                             .from(tagWord)
                             .where(tagWord.tagWordId.eq(tagMasterRes.getTagWordId()))
                             .fetch();
-                    tagWords.forEach(tagWord -> queryRes.getTagList().add(new TagDto.res(tagMasterRes, tagWord)));
+                    tagWords.forEach(tagWord -> queryRes.getTagList().add(new TagDto.res(tagWord)));
                 }
             });
         });
