@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -41,6 +42,10 @@ public class TagService {
         if ( Consts.BLANK.equals(req.getTagName()) ) {
             return new ArrayList<>();
         }
-        return this.tagDslRepository.searchTags(req);
+        List<TagWord> tempList = this.tagWordRepository.getByTagNameContaining(req.getTagName());
+        return tempList
+                .stream()
+                .map(tagWord -> new TagDto.res(tagWord))
+                .collect(Collectors.toList());
     }
 }

@@ -14,7 +14,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Service
@@ -74,6 +73,18 @@ public class UserService {
 
     public UserDto.res getUserInfo(Long userId)  {
         User user = this.userRepository.findByUserId(userId).orElse(null);
+        School school = this.schoolRepository.getById(user.getSchoolId());
+        return UserDto.res.builder()
+                .userId(user.getUserId())
+                .nickName(user.getNickName())
+                .score(user.getScore())
+                .schoolId(school.getSchoolId())
+                .schoolName(school.getSchoolName())
+                .build();
+    }
+
+    public UserDto.res getUserInfo(String userEmail)  {
+        User user = this.userRepository.findByEmail(userEmail).orElse(null);
         School school = this.schoolRepository.getById(user.getSchoolId());
         return UserDto.res.builder()
                 .userId(user.getUserId())

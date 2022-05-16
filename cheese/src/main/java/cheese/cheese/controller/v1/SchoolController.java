@@ -1,7 +1,6 @@
 package cheese.cheese.controller.v1;
 
 import cheese.cheese.dto.SchoolDto;
-import cheese.cheese.dto.UserDto;
 import cheese.cheese.service.SchoolService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
