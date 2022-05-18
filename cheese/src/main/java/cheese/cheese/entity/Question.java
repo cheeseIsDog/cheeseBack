@@ -40,4 +40,8 @@ public class Question extends BaseTimeEntity {
     public void setQuestionId(Long questionId) {
         this.questionId = questionId;
     }
+
+    public void setAsSolved() {
+        this.solved_YN = YN.Yes;
+    }
 }

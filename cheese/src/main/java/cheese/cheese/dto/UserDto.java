@@ -128,6 +128,7 @@ public class UserDto {
     @NoArgsConstructor
     @Getter
     public static class userInfoDetail {
+        private Long userId;
         private String email;
         private String nickName;
         private String schoolName;
@@ -139,6 +140,7 @@ public class UserDto {
 
         @Builder
         public userInfoDetail(User user, School school, Integer myQuestions, List<AnswerDto.res> myAnswers) {
+            this.userId = user.getUserId();
             this.email = user.getEmail();
             this.nickName = user.getNickName();
             this.schoolName = school.getSchoolName();

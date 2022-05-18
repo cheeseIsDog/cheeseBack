@@ -41,6 +41,7 @@ public class AnswerDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class chooseAnswer{
+        private Long questionId;
         private Long answerId;
         private Long userId;
 

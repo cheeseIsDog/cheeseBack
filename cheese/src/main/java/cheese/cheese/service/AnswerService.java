@@ -3,10 +3,8 @@ package cheese.cheese.service;
 import cheese.cheese.dto.AnswerDto;
 import cheese.cheese.dto.Enum.YN;
 import cheese.cheese.entity.AnswerLikeDislike;
-import cheese.cheese.repository.AnswerChooseRepository;
-import cheese.cheese.repository.AnswerDslRepository;
-import cheese.cheese.repository.AnswerLikeDislikeRepository;
-import cheese.cheese.repository.AnswerRepository;
+import cheese.cheese.entity.Question;
+import cheese.cheese.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AnswerService {
     private final AnswerRepository answerRepository;
+    private final QuestionRepository questionRepository;
     private final AnswerChooseRepository answerChooseRepository;
     private final AnswerLikeDislikeRepository answerLikeDislikeRepository;
     private final AnswerDslRepository answerDslRepository;
@@ -47,6 +46,10 @@ public class AnswerService {
     public Boolean chooseAsRightAnswer(AnswerDto.chooseAnswer choose) {
         try {
             this.answerChooseRepository.save(choose.toEntity());
+            Question question = this.questionRepository.findByQuestionId(choose.getQuestionId())
+                    .orElseThrow(Exception::new);
+            question.setAsSolved();
+            this.questionRepository.save(question);
         } catch (Exception e) {
             return false;
         }
