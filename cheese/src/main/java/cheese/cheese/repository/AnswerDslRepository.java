@@ -63,4 +63,19 @@ public class AnswerDslRepository {
         });
         return resList;
     }
+
+
+    public List<AnswerDto.res> ofUser(Long userId) {
+        return this.jpaQueryFactory.select(
+                Projections.constructor(
+                        AnswerDto.res.class,
+                        answer,
+                        answerChoose
+                    )
+                )
+                .from(answer)
+                .where(answer.userId.eq(userId))
+                .leftJoin(answerChoose).on(answerChoose.answerId.eq(answer.answerId))
+                .fetch();
+    }
 }

@@ -44,7 +44,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Not Found !!")
     })
     @GetMapping("/getUserInfo")
-    public UserDto.res getToken(
+    public UserDto.userInfoDetail getToken(
             final HttpServletRequest request) throws Exception {
         String token = "";
         String bearerToken = request.getHeader("Authorization");

@@ -1,10 +1,13 @@
 package cheese.cheese.dto;
 
+import cheese.cheese.entity.School;
 import cheese.cheese.entity.User;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 public class UserDto {
 
@@ -119,6 +122,32 @@ public class UserDto {
         @Builder
         public delete(String email) {
             this.email = email;
+        }
+    }
+
+    @NoArgsConstructor
+    @Getter
+    public static class userInfoDetail {
+        private String email;
+        private String nickName;
+        private String schoolName;
+        private Integer myQuestions;
+        private Integer myChosenAnswers;
+        private Integer myHasNotChosenAnswers;
+        private Integer myAllAnswers;
+
+
+        @Builder
+        public userInfoDetail(User user, School school, Integer myQuestions, List<AnswerDto.res> myAnswers) {
+            this.email = user.getEmail();
+            this.nickName = user.getNickName();
+            this.schoolName = school.getSchoolName();
+            this.myQuestions = myQuestions;
+            this.myAllAnswers = myAnswers.size();
+            this.myChosenAnswers = (int) myAnswers.stream()
+                    .filter(AnswerDto.res::getIsChosen)
+                    .count();
+            this.myHasNotChosenAnswers = myAllAnswers - myChosenAnswers;
         }
     }
 }

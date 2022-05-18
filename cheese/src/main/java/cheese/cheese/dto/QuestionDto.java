@@ -142,9 +142,8 @@ public class QuestionDto {
         }
 
         public void setLikesDislikes(List<QuestionDto.questionLikeDislike> list) {
-
             list.forEach(dto -> {
-                if (dto.getLikes()) {
+                if (dto.getLikes() != null) {
                     this.likes++;
                 } else {
                     this.dislikes++;

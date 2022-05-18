@@ -1,9 +1,13 @@
 package cheese.cheese.service;
 
 import cheese.cheese.Advice.Exception.UserNotFoundException;
+import cheese.cheese.dto.AnswerDto;
 import cheese.cheese.dto.UserDto;
+import cheese.cheese.entity.Question;
 import cheese.cheese.entity.School;
 import cheese.cheese.entity.User;
+import cheese.cheese.repository.AnswerDslRepository;
+import cheese.cheese.repository.QuestionRepository;
 import cheese.cheese.repository.SchoolRepository;
 import cheese.cheese.repository.UserRepository;
 import cheese.cheese.security.JwtTokenProvider;
@@ -11,18 +15,19 @@ import cheese.cheese.security.UserAuthentication;
 import cheese.cheese.util.IdGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final SchoolRepository schoolRepository;
+    private final QuestionRepository questionRepository;
+    private final AnswerDslRepository answerDslRepository;
     private final IdGenerator idGenerator;
-    private PasswordEncoder passwordEncoder;
 
     public Boolean signUp(UserDto.SignUpReq signUpReq) throws Exception{
         Boolean result = false;
@@ -83,15 +88,16 @@ public class UserService {
                 .build();
     }
 
-    public UserDto.res getUserInfo(String userEmail)  {
+    public UserDto.userInfoDetail getUserInfo(String userEmail)  {
         User user = this.userRepository.findByEmail(userEmail).orElse(null);
         School school = this.schoolRepository.getById(user.getSchoolId());
-        return UserDto.res.builder()
-                .userId(user.getUserId())
-                .nickName(user.getNickName())
-                .score(user.getScore())
-                .schoolId(school.getSchoolId())
-                .schoolName(school.getSchoolName())
+        Integer questions = this.questionRepository.countQuestionsByUserId(user.getUserId());
+        List<AnswerDto.res> answers = this.answerDslRepository.ofUser(user.getUserId());
+        return UserDto.userInfoDetail.builder()
+                .user(user)
+                .school(school)
+                .myQuestions(questions)
+                .myAnswers(answers)
                 .build();
     }
 

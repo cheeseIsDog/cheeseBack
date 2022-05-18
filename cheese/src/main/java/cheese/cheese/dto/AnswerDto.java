@@ -105,13 +105,22 @@ public class AnswerDto {
             this.modifiedDate = answer.getModifiedDate();
         }
 
+        public res(Answer answer, AnswerChoose answerChoose) {
+            this.answerId = answer.getAnswerId();
+            this.userId = answer.getUserId();
+            this.isChosen = answerChoose != null;
+            this.contents = answer.getContents();
+            this.createdDate = answer.getCreatedDate();
+            this.modifiedDate = answer.getModifiedDate();
+        }
+
         public void setUserLikeDislikeAction(YN yn){
             this.userLikeDislikeAction = yn;
         }
 
         public void setLikesDislikes(List<AnswerDto.answerLikeDislike> list) {
             list.forEach(dto -> {
-                if (dto.getLike()) {
+                if (dto.getLike() != null) {
                     this.likes++;
                 } else {
                     this.dislikes++;

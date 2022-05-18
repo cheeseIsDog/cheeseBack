@@ -1,10 +1,8 @@
 package cheese.cheese.service;
 
-import cheese.cheese.dto.AnswerDto;
 import cheese.cheese.dto.Enum.Consts;
 import cheese.cheese.dto.Enum.YN;
 import cheese.cheese.dto.QuestionDto;
-import cheese.cheese.entity.AnswerLikeDislike;
 import cheese.cheese.entity.Question;
 import cheese.cheese.entity.QuestionLikeDislike;
 import cheese.cheese.entity.User;
