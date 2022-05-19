@@ -131,6 +131,7 @@ public class UserDto {
         private Long userId;
         private String email;
         private String nickName;
+        private Long schoolId;
         private String schoolName;
         private Integer myQuestions;
         private Integer myChosenAnswers;
@@ -143,6 +144,7 @@ public class UserDto {
             this.userId = user.getUserId();
             this.email = user.getEmail();
             this.nickName = user.getNickName();
+            this.schoolId = school.getSchoolId();
             this.schoolName = school.getSchoolName();
             this.myQuestions = myQuestions;
             this.myAllAnswers = myAnswers.size();
