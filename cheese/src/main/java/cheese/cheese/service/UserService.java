@@ -14,6 +14,7 @@ import cheese.cheese.security.UserAuthentication;
 import cheese.cheese.util.IdGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
@@ -31,12 +32,13 @@ public class UserService {
     private final QuestionRepository questionRepository;
     private final AnswerDslRepository answerDslRepository;
     private final IdGenerator idGenerator;
+    private final PasswordEncoder passwordEncoder;
 
     public Boolean signUp(UserDto.SignUpReq signUpReq) throws Exception{
         Boolean result = false;
         if (this.isNotExistedEmail(signUpReq.getEmail()) && this.isNotExistedNickName(signUpReq.getNickName())) {
             User user = signUpReq.toEntity();
-            user.setPassword(user.getPassword());
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setUserId(idGenerator.getNewId());
             userRepository.save(user);
             result = true;
@@ -55,7 +57,7 @@ public class UserService {
             throw new UserException(HAS_NO_USER_ID);
         }
 
-        if(!loginReq.getPassword().equals(user.getPassword())){
+        if(!passwordEncoder.encode(loginReq.getPassword()).equals(user.getPassword())){
             throw new UserException(PASSWORD_IS_NOT_RIGHT);
         }
 
