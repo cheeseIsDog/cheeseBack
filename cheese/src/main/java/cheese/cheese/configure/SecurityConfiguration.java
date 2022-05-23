@@ -39,7 +39,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
-                .antMatchers("/web/v1/user/**", "web/v1/school/**","/v*/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**")
+                .antMatchers("/web/v1/user/**", "/web/v1/school/listBySearching", "/web/v1/school/allSchoolList","/v*/api-docs", "/configuration/**", "/swagger*/**", "/webjars/**")
                 .permitAll()
                 .antMatchers("/**")
                 .authenticated().and()

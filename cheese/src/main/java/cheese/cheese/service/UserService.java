@@ -1,9 +1,8 @@
 package cheese.cheese.service;
 
-import cheese.cheese.Advice.Exception.UserNotFoundException;
+import cheese.cheese.Advice.Exception.UserException;
 import cheese.cheese.dto.AnswerDto;
 import cheese.cheese.dto.UserDto;
-import cheese.cheese.entity.Question;
 import cheese.cheese.entity.School;
 import cheese.cheese.entity.User;
 import cheese.cheese.repository.AnswerDslRepository;
@@ -19,6 +18,10 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Optional;
+
+import static cheese.cheese.dto.Enum.ExceptionConsts.HAS_NO_USER_ID;
+import static cheese.cheese.dto.Enum.ExceptionConsts.PASSWORD_IS_NOT_RIGHT;
 
 @Service
 @RequiredArgsConstructor
@@ -42,11 +45,18 @@ public class UserService {
     }
 
     public UserDto.res signIn(HttpServletResponse res,
-                              UserDto.loginReq loginReq) {
-        User user = this.userRepository.findByEmail(loginReq.getEmail()).orElseThrow(UserNotFoundException::new);
+                              UserDto.loginReq loginReq) throws Exception{
+        Optional<User> optionalUser = this.userRepository.findByEmail(loginReq.getEmail());
+        User user;
+
+        if(optionalUser.isPresent()) {
+            user = optionalUser.get();
+        } else {
+            throw new UserException(HAS_NO_USER_ID);
+        }
 
         if(!loginReq.getPassword().equals(user.getPassword())){
-            throw new IllegalArgumentException("비밀번호를 확인하세요.");
+            throw new UserException(PASSWORD_IS_NOT_RIGHT);
         }
 
         Authentication authentication = new UserAuthentication(loginReq.getEmail(), null, null);
