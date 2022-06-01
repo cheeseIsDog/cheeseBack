@@ -35,6 +35,7 @@ public class AnswerDto {
     @NoArgsConstructor
     public static class req{
         private Long questionId;
+        private Long userId;
     }
 
     @Getter
@@ -90,7 +91,7 @@ public class AnswerDto {
         private Integer likes = 0;
         private Integer dislikes = 0;
         private Boolean isChosen;
-        private YN userLikeDislikeAction;
+        private String userLikeDislikeAction;
         private UserDto.res user;
         private List<CommentDto.res> comments = new ArrayList<>();
         private LocalDateTime createdDate;
@@ -115,8 +116,8 @@ public class AnswerDto {
             this.modifiedDate = answer.getModifiedDate();
         }
 
-        public void setUserLikeDislikeAction(YN yn){
-            this.userLikeDislikeAction = yn;
+        public void setUserLikeDislikeAction(String action){
+            this.userLikeDislikeAction = action;
         }
 
         public void setLikesDislikes(List<AnswerDto.answerLikeDislike> list) {

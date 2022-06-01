@@ -54,7 +54,7 @@ public class QuestionController {
 
     @PostMapping("/getByQuestionId")
     public QuestionDto.res getQuestion(@RequestBody QuestionDto.reqById req) throws Exception {
-        return this.questionService.getQuestionById(req.getQuestionId());
+        return this.questionService.getQuestionById(req.getQuestionId(), req.getUserId());
     }
 
     @Operation(summary = "search Question By Title", description = "학교 내 질문을 제목으로 검색")

@@ -20,4 +20,9 @@ public final class Consts {
     public static final String FAIL_LOGIN = "FAIL_LOGIN";
 
     public static final String UNIVERSE_POSTFIX = "대";
+
+    public static final String LIKE = "like";
+    public static final String DIS_LIKE = "disLike";
+    public static final String DO_NOTHING = "doNothing";
+
 }

@@ -39,7 +39,7 @@ public class AnswerController {
     })
     @PostMapping("/list")
     public List<AnswerDto.res> ofQuestion(@RequestBody AnswerDto.req res) throws Exception {
-        return this.answerService.ofQuestion(res.getQuestionId());
+        return this.answerService.ofQuestion(res.getQuestionId(), res.getUserId());
     }
 
     @Operation(summary = "choose as right answer", description = "답변 채택")

@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import static cheese.cheese.dto.Enum.Consts.*;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -43,7 +45,7 @@ public class QuestionService {
         return question == null;
     }
 
-    public QuestionDto.res getQuestionById(Long questionId) {
+    public QuestionDto.res getQuestionById(Long questionId, Long userId) {
         Question question = this.questionRepository.findByQuestionId(questionId).orElse(null);
         User user = this.userRepository.findByUserId(question.getUserId()).orElse(null);
         List<QuestionDto.res> listForGettingTags = new ArrayList<>();
@@ -53,20 +55,13 @@ public class QuestionService {
                 .build();
         listForGettingTags.add(res);
         this.questionDslRepository.makeTagsForQuestions(listForGettingTags);
+        this.checkUserLikeDisLikeAction(res, questionId, userId);
         return res;
     }
 
     public List<QuestionDto.res> getQuestionsBySchoolId(QuestionDto.req req) {
         List<QuestionDto.res> result = this.questionDslRepository.getQuestionsWithTag(req);
-        result.forEach(res -> {
-            QuestionLikeDislike questionLikeDislike = this.questionLikeDislikeRepository
-                    .getByQuestionId(res.getQuestionId());
-            if (questionLikeDislike != null) {
-                res.setUserLikeDislikeAction(YN.Yes);
-            } else {
-                res.setUserLikeDislikeAction(YN.No);
-            }
-        });
+        result.forEach(res -> this.checkUserLikeDisLikeAction(res, res.getQuestionId(), req.getUserId()));
         return result;
     }
 
@@ -74,14 +69,17 @@ public class QuestionService {
         if ( Consts.BLANK.equals(req.getTitle()) ) {
             return new ArrayList<>();
         }
-        return questionDslRepository.searchQuestionsByTitle(req);
+        List<QuestionDto.res> result = questionDslRepository.searchQuestionsByTitle(req);
+        result.forEach(res -> this.checkUserLikeDisLikeAction(res, res.getQuestionId(), req.getUserId()));
+        return result;
     }
 
     public List<QuestionDto.res> searchQuestionsByTag(QuestionDto.searchReqByTag req) {
         if ( Consts.BLANK.equals(req.getTagName()) ) {
             return new ArrayList<>();
-        }
-        return questionDslRepository.searchQuestionsByTag(req);
+        }        List<QuestionDto.res> result = questionDslRepository.searchQuestionsByTag(req);
+        result.forEach(res -> this.checkUserLikeDisLikeAction(res, res.getQuestionId(), req.getUserId()));
+        return result;
     }
 
     public QuestionDto.resOfUserQuestions getUserQuestionsInfo(Long userId) {
@@ -111,7 +109,7 @@ public class QuestionService {
                             questionLikeDislikeDto.getUserId()
                     );
             if (questionLikeDislike != null) {
-                questionLikeDislike.changeState(questionLikeDislike.getLikes(), questionLikeDislike.getDislikes());
+                questionLikeDislike.changeState(questionLikeDislikeDto.getLikes(), questionLikeDislikeDto.getDislikes());
                 this.questionLikeDislikeRepository.save(questionLikeDislike);
             } else {
                 this.questionLikeDislikeRepository.save(questionLikeDislikeDto.toEntity());
@@ -120,5 +118,21 @@ public class QuestionService {
             result = false;
         }
         return result;
+    }
+
+    private void checkUserLikeDisLikeAction(QuestionDto.res res, Long questionId, Long userId) {
+        QuestionLikeDislike questionLikeDislike = this.questionLikeDislikeRepository
+                .getByQuestionIdAndUserId(questionId, userId);
+        if (questionLikeDislike == null) {
+            res.setUserLikeDislikeAction(DO_NOTHING);
+        } else {
+            if (questionLikeDislike.getLikes()) {
+                res.setUserLikeDislikeAction(LIKE);
+            } else if (questionLikeDislike.getDislikes()) {
+                res.setUserLikeDislikeAction(DIS_LIKE);
+            } else {
+                res.setUserLikeDislikeAction(DO_NOTHING);
+            }
+        }
     }
 }

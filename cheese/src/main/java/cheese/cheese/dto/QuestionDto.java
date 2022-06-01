@@ -41,6 +41,7 @@ public class QuestionDto {
     @Builder
     public static class req{
         private Long schoolId;
+        private Long userId;
         private Long offset;
         private Long limit;
     }
@@ -51,6 +52,7 @@ public class QuestionDto {
     @Builder
     public static class reqById{
         private Long questionId;
+        private Long userId;
     }
 
     @Getter
@@ -58,6 +60,7 @@ public class QuestionDto {
     @NoArgsConstructor
     public static class searchReqByTitle{
         private Long schoolId;
+        private Long userId;
         private String title;
         private Long offset;
         private Long limit;
@@ -69,6 +72,7 @@ public class QuestionDto {
     @NoArgsConstructor
     public static class searchReqByTag{
         private Long schoolId;
+        private Long userId;
         private String tagName;
         private Long offset;
         private Long limit;
@@ -118,7 +122,7 @@ public class QuestionDto {
         private List<TagDto.res> tagList = new ArrayList<>();
         private Integer likes = 0;
         private Integer dislikes = 0;
-        private YN userLikeDislikeAction;
+        private String userLikeDislikeAction;
         private Long duringTime;
         private YN solved_YN;
         private LocalDateTime createdDate;
@@ -137,8 +141,8 @@ public class QuestionDto {
             this.modifiedDate = question.getModifiedDate();
         }
 
-        public void setUserLikeDislikeAction(YN yn) {
-            this.userLikeDislikeAction = yn;
+        public void setUserLikeDislikeAction(String action) {
+            this.userLikeDislikeAction = action;
         }
 
         public void setLikesDislikes(List<QuestionDto.questionLikeDislike> list) {
