@@ -1,7 +1,6 @@
 package cheese.cheese.service;
 
 import cheese.cheese.dto.Enum.Consts;
-import cheese.cheese.dto.Enum.YN;
 import cheese.cheese.dto.QuestionDto;
 import cheese.cheese.entity.Question;
 import cheese.cheese.entity.QuestionLikeDislike;
@@ -109,7 +108,7 @@ public class QuestionService {
                             questionLikeDislikeDto.getUserId()
                     );
             if (questionLikeDislike != null) {
-                questionLikeDislike.changeState(questionLikeDislikeDto.getLikes(), questionLikeDislikeDto.getDislikes());
+                questionLikeDislike.changeState(questionLikeDislikeDto.getLike(), questionLikeDislikeDto.getDislike());
                 this.questionLikeDislikeRepository.save(questionLikeDislike);
             } else {
                 this.questionLikeDislikeRepository.save(questionLikeDislikeDto.toEntity());
@@ -126,9 +125,9 @@ public class QuestionService {
         if (questionLikeDislike == null) {
             res.setUserLikeDislikeAction(DO_NOTHING);
         } else {
-            if (questionLikeDislike.getLikes()) {
+            if (questionLikeDislike.getGood()) {
                 res.setUserLikeDislikeAction(LIKE);
-            } else if (questionLikeDislike.getDislikes()) {
+            } else if (questionLikeDislike.getBad()) {
                 res.setUserLikeDislikeAction(DIS_LIKE);
             } else {
                 res.setUserLikeDislikeAction(DO_NOTHING);

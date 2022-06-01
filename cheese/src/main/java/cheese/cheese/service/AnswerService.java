@@ -1,11 +1,8 @@
 package cheese.cheese.service;
 
 import cheese.cheese.dto.AnswerDto;
-import cheese.cheese.dto.Enum.YN;
-import cheese.cheese.dto.QuestionDto;
 import cheese.cheese.entity.AnswerLikeDislike;
 import cheese.cheese.entity.Question;
-import cheese.cheese.entity.QuestionLikeDislike;
 import cheese.cheese.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -88,9 +85,9 @@ public class AnswerService {
         if (answerLikeDislike == null) {
             res.setUserLikeDislikeAction(DO_NOTHING);
         } else {
-            if (answerLikeDislike.getLikes()) {
+            if (answerLikeDislike.getGood()) {
                 res.setUserLikeDislikeAction(LIKE);
-            } else if (answerLikeDislike.getDislikes()) {
+            } else if (answerLikeDislike.getBad()) {
                 res.setUserLikeDislikeAction(DIS_LIKE);
             } else {
                 res.setUserLikeDislikeAction(DO_NOTHING);

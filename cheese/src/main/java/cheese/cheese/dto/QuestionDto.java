@@ -91,22 +91,22 @@ public class QuestionDto {
     public static class questionLikeDislike{
         private Long questionId;
         private Long userId;
-        private Boolean likes;
-        private Boolean dislikes;
+        private Boolean like;
+        private Boolean dislike;
 
         public questionLikeDislike(QuestionLikeDislike questionLikeDislike) {
             this.questionId = questionLikeDislike.getQuestionId();
             this.userId = questionLikeDislike.getQuestionId();
-            this.likes = questionLikeDislike.getLikes();
-            this.dislikes = questionLikeDislike.getDislikes();
+            this.like = questionLikeDislike.getGood();
+            this.dislike = questionLikeDislike.getBad();
         }
 
         public QuestionLikeDislike toEntity() {
             return QuestionLikeDislike.builder()
                     .questionId(this.questionId)
                     .userId(this.userId)
-                    .likes(this.likes)
-                    .dislikes(this.dislikes)
+                    .like(this.like)
+                    .dislike(this.dislike)
                     .build();
         }
     }
@@ -147,9 +147,10 @@ public class QuestionDto {
 
         public void setLikesDislikes(List<QuestionDto.questionLikeDislike> list) {
             list.forEach(dto -> {
-                if (dto.getLikes() != null) {
+                if (dto.getLike()) {
                     this.likes++;
-                } else {
+                }
+                if (dto.getDislike()) {
                     this.dislikes++;
                 }
             });

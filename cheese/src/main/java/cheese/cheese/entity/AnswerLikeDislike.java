@@ -17,26 +17,20 @@ public class AnswerLikeDislike extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="answer_id")
     private Long answerId;
-
-    @Column(name="user_id")
     private Long userId;
-
-    @Column(name="likes")
-    private Boolean likes;
-
-    @Column(name="dislikes")
-    private Boolean dislikes;
+    private Boolean good;
+    private Boolean bad;
 
     @Builder
-    public AnswerLikeDislike(Long userId, Long answerId, Boolean likes, Boolean dislikes) {
+    public AnswerLikeDislike(Long userId, Long answerId, Boolean like, Boolean dislike) {
         this.userId = userId;
         this.answerId = answerId;
-        this.likes = likes;
-        this.dislikes = dislikes;
+        this.good = like;
+        this.bad = dislike;
     }
 
-    public void changeState(Boolean likes, Boolean dislikes) {
-        this.likes = likes;
-        this.dislikes = dislikes;
+    public void changeState(Boolean like, Boolean dislike) {
+        this.good = like;
+        this.bad = dislike;
     }
 }

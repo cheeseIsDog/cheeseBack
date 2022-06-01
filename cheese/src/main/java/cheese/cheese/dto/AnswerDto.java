@@ -66,16 +66,16 @@ public class AnswerDto {
         public answerLikeDislike(AnswerLikeDislike answerLikeDislike) {
             this.answerId = answerLikeDislike.getAnswerId();
             this.userId = answerLikeDislike.getUserId();
-            this.like = answerLikeDislike.getLikes();
-            this.dislike = answerLikeDislike.getDislikes();
+            this.like = answerLikeDislike.getGood();
+            this.dislike = answerLikeDislike.getBad();
         }
 
         public AnswerLikeDislike toEntity() {
             return AnswerLikeDislike.builder()
                     .answerId(this.answerId)
                     .userId(this.userId)
-                    .likes(this.like)
-                    .dislikes(this.dislike)
+                    .like(this.like)
+                    .dislike(this.dislike)
                     .build();
         }
     }
@@ -122,9 +122,10 @@ public class AnswerDto {
 
         public void setLikesDislikes(List<AnswerDto.answerLikeDislike> list) {
             list.forEach(dto -> {
-                if (dto.getLike() != null) {
+                if (dto.getLike()) {
                     this.likes++;
-                } else {
+                }
+                if (dto.getDislike()){
                     this.dislikes++;
                 }
             });
