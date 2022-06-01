@@ -38,7 +38,8 @@ public class UserService {
         Boolean result = false;
         if (this.isNotExistedEmail(signUpReq.getEmail()) && this.isNotExistedNickName(signUpReq.getNickName())) {
             User user = signUpReq.toEntity();
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+//            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setPassword(user.getPassword());
             user.setUserId(idGenerator.getNewId());
             userRepository.save(user);
             result = true;
@@ -57,7 +58,11 @@ public class UserService {
             throw new UserException(HAS_NO_USER_ID);
         }
 
-        if(!passwordEncoder.encode(loginReq.getPassword()).equals(user.getPassword())){
+//        if(!passwordEncoder.encode(loginReq.getPassword()).equals(user.getPassword())){
+//            throw new UserException(PASSWORD_IS_NOT_RIGHT);
+//        }
+
+        if(!loginReq.getPassword().equals(user.getPassword())){
             throw new UserException(PASSWORD_IS_NOT_RIGHT);
         }
 

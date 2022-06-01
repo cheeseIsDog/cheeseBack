@@ -10,6 +10,8 @@ public class IdGenerator {
 
     public Long getNewId() {
         long id = random.nextLong();
-        return id < 0 ? id*(-1) : id;
+        id = id < 0 ? id*(-1) : id;
+        id %= 100000000;
+        return id;
     }
 }

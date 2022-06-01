@@ -75,7 +75,8 @@ public class AnswerService {
                             answerLikeDislikeDto.getUserId()
                     );
             if (answerLikeDislike != null) {
-                answerLikeDislike.changeState();
+                answerLikeDislike.changeState(answerLikeDislike.getLikes(), answerLikeDislike.getDislikes());
+                this.answerLikeDislikeRepository.save(answerLikeDislike);
             } else {
                 this.answerLikeDislikeRepository.save(answerLikeDislikeDto.toEntity());
             }

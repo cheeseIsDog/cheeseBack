@@ -30,13 +30,8 @@ public class QuestionLikeDislike extends BaseTimeEntity {
         this.questionId = questionId;
     }
 
-    public void changeState() {
-        if (this.likes) {
-            this.likes = false;
-            this.dislikes = true;
-        } else {
-            this.likes = true;
-            this.dislikes = false;
-        }
+    public void changeState(Boolean likes, Boolean dislikes) {
+        this.likes = likes;
+        this.dislikes = dislikes;
     }
 }

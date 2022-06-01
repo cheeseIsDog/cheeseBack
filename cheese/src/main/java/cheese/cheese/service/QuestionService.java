@@ -111,7 +111,8 @@ public class QuestionService {
                             questionLikeDislikeDto.getUserId()
                     );
             if (questionLikeDislike != null) {
-                questionLikeDislike.changeState();
+                questionLikeDislike.changeState(questionLikeDislike.getLikes(), questionLikeDislike.getDislikes());
+                this.questionLikeDislikeRepository.save(questionLikeDislike);
             } else {
                 this.questionLikeDislikeRepository.save(questionLikeDislikeDto.toEntity());
             }
