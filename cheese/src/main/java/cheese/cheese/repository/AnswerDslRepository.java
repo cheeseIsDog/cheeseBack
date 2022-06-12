@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static cheese.cheese.entity.QComment.comment;
+import static cheese.cheese.entity.QQuestion.question;
 import static cheese.cheese.entity.QUser.user;
 import static cheese.cheese.entity.QAnswer.answer;
 import static cheese.cheese.entity.QAnswerChoose.answerChoose;
@@ -34,6 +35,7 @@ public class AnswerDslRepository {
                 )
                 .from(answer)
                 .where(answer.questionId.eq(questionId))
+                .orderBy(answer.createdDate.desc())
                 .leftJoin(user).on(user.userId.eq(answer.userId))
                 .leftJoin(answerChoose).on(answerChoose.answerId.eq(answer.answerId))
                 .fetch();
@@ -57,6 +59,7 @@ public class AnswerDslRepository {
                     )
                     .from(comment)
                     .where(comment.answerId.eq(res.getAnswerId()))
+                    .orderBy(comment.createdDate.desc())
                     .leftJoin(user).on(user.userId.eq(comment.userId))
                     .fetch();
             res.getComments().addAll(commentRes);
@@ -75,6 +78,7 @@ public class AnswerDslRepository {
                 )
                 .from(answer)
                 .where(answer.userId.eq(userId))
+                .orderBy(answer.createdDate.desc())
                 .leftJoin(answerChoose).on(answerChoose.answerId.eq(answer.answerId))
                 .fetch();
     }
