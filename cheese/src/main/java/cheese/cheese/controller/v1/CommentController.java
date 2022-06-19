@@ -1,5 +1,6 @@
 package cheese.cheese.controller.v1;
 
+import cheese.cheese.Advice.Exception.GlobalException;
 import cheese.cheese.dto.CommentDto;
 import cheese.cheese.dto.QuestionDto;
 import cheese.cheese.service.CommentService;
@@ -9,6 +10,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import static cheese.cheese.dto.Enum.ExceptionConsts.SERVER_ERROR;
 
 @Slf4j
 @RestController
@@ -25,7 +28,11 @@ public class CommentController {
             @ApiResponse(responseCode = "404", description = "Not Found !!")
     })
     @PostMapping("/create")
-    public Boolean createQuestion(@RequestBody CommentDto.gen gen) throws Exception {
-        return commentService.create(gen);
+    public Boolean createComment(@RequestBody CommentDto.gen gen) throws Exception {
+        Boolean result = commentService.create(gen);
+        if(!result) {
+            throw new GlobalException(SERVER_ERROR);
+        }
+        return result;
     }
 }

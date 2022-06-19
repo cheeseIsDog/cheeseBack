@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static cheese.cheese.dto.Enum.ExceptionConsts.*;
+
 public class QuestionDto {
 
     @Getter
@@ -25,7 +27,16 @@ public class QuestionDto {
         private String contents;
         private List<String> tags;
 
-        public Question toEntity() {
+        public Question toEntity() throws Exception {
+            if (userId == null) {
+                throw new Exception(HAS_NO_USER_ID2);
+            }
+            if (schoolId == null) {
+                throw new Exception(HAS_NO_SCHOOL_ID);
+            }
+            if (contents == null || contents.isEmpty()) {
+                throw new Exception(HAS_NO_QUESTION_CONTENTS);
+            }
             return Question.builder()
                     .userId(this.userId)
                     .schoolId(this.schoolId)

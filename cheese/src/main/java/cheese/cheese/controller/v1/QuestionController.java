@@ -1,8 +1,10 @@
 package cheese.cheese.controller.v1;
 
+import cheese.cheese.Advice.Exception.GlobalException;
 import cheese.cheese.dto.QuestionDto;
 import cheese.cheese.service.QuestionService;
 import cheese.cheese.service.TagService;
+import cheese.cheese.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -10,7 +12,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static cheese.cheese.dto.Enum.ExceptionConsts.SERVER_ERROR;
 
 @Slf4j
 @RestController
@@ -19,6 +24,7 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 public class QuestionController {
     private final QuestionService questionService;
+    private final UserService userService;
     private final TagService tagService;
 
     @Operation(summary = "create Question", description = "학교 내 질문 생성")
@@ -29,6 +35,7 @@ public class QuestionController {
     })
     @PostMapping("/create")
     public Boolean createQuestion(@RequestBody QuestionDto.gen gen) throws Exception {
+        this.userService.isAbusingUser(gen.getUserId(), gen.getSchoolId());
         this.tagService.saveTags(gen, this.questionService.create(gen));
         return true;
     }
@@ -42,7 +49,13 @@ public class QuestionController {
 
     @PostMapping("/getBySchool")
     public List<QuestionDto.res> getQuestions(@RequestBody QuestionDto.req req) throws Exception {
-        return this.questionService.getQuestionsBySchoolId(req);
+        List<QuestionDto.res> result = new ArrayList<>();
+        try {
+            this.questionService.getQuestionsBySchoolId(req);
+        } catch (Exception e) {
+            throw new GlobalException(SERVER_ERROR);
+        }
+        return result;
     }
 
     @Operation(summary = "get Question", description = "학교 내 특정 질문 쿼리")
@@ -54,7 +67,13 @@ public class QuestionController {
 
     @PostMapping("/getByQuestionId")
     public QuestionDto.res getQuestion(@RequestBody QuestionDto.reqById req) throws Exception {
-        return this.questionService.getQuestionById(req.getQuestionId(), req.getUserId());
+        QuestionDto.res result;
+        try {
+            result = this.questionService.getQuestionById(req.getQuestionId(), req.getUserId());
+        } catch (Exception e) {
+            throw new GlobalException(SERVER_ERROR);
+        }
+        return result;
     }
 
     @Operation(summary = "search Question By Title", description = "학교 내 질문을 제목으로 검색")

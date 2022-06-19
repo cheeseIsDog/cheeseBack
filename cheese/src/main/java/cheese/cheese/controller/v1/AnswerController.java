@@ -1,5 +1,6 @@
 package cheese.cheese.controller.v1;
 
+import cheese.cheese.Advice.Exception.GlobalException;
 import cheese.cheese.dto.AnswerDto;
 import cheese.cheese.dto.CommentDto;
 import cheese.cheese.service.AnswerService;
@@ -11,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static cheese.cheese.dto.Enum.ExceptionConsts.SERVER_ERROR;
 
 @Slf4j
 @RestController
@@ -28,7 +31,11 @@ public class AnswerController {
     })
     @PostMapping("/create")
     public Boolean createQuestion(@RequestBody AnswerDto.gen gen) throws Exception {
-        return this.answerService.create(gen);
+        Boolean result = answerService.create(gen);
+        if(!result) {
+            throw new GlobalException(SERVER_ERROR);
+        }
+        return result;
     }
 
     @Operation(summary = "get answer List", description = "답변(댓글) 생성")

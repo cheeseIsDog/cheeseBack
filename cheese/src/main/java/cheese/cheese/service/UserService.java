@@ -21,8 +21,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
 
-import static cheese.cheese.dto.Enum.ExceptionConsts.HAS_NO_USER_ID;
-import static cheese.cheese.dto.Enum.ExceptionConsts.PASSWORD_IS_NOT_RIGHT;
+import static cheese.cheese.dto.Enum.ExceptionConsts.*;
 
 @Service
 @RequiredArgsConstructor
@@ -118,13 +117,33 @@ public class UserService {
                 .build();
     }
 
-    private Boolean isNotExistedEmail(String email) {
+    private Boolean isNotExistedEmail(String email) throws Exception {
         User user = userRepository.findByEmail(email).orElse(null);
-        return user == null;
+        boolean existed = user != null;
+        if (existed) {
+            throw new UserException(EXISTED_EMAIL);
+        }
+        return true;
     }
 
     private Boolean isNotExistedNickName(String nickName) {
         User user = userRepository.findByNickName(nickName).orElse(null);
-        return user == null;
+        boolean existed = user != null;
+        if (existed) {
+            throw new UserException(EXISTED_NICKNAME);
+        }
+        return true;
+    }
+
+    public void isAbusingUser(Long userId, Long schoolId) throws Exception{
+        User user = this.userRepository.findByUserId(userId).orElse(null);
+
+        if (user == null) {
+            throw new UserException(GHOST_USER);
+        }
+
+        if (!user.getSchoolId().equals(schoolId)) {
+            throw new UserException(ABUSING_USER);
+        }
     }
 }

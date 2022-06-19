@@ -1,5 +1,6 @@
 package cheese.cheese.controller.v1;
 
+import cheese.cheese.Advice.Exception.UserException;
 import cheese.cheese.dto.UserDto;
 import cheese.cheese.security.JwtTokenProvider;
 import cheese.cheese.service.EmailService;
@@ -14,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import static cheese.cheese.dto.Enum.Consts.BLANK;
+import static cheese.cheese.dto.Enum.ExceptionConsts.*;
 
 @Slf4j
 @RestController
@@ -46,12 +50,17 @@ public class UserController {
     @GetMapping("/getUserInfo")
     public UserDto.userInfoDetail getToken(
             final HttpServletRequest request) throws Exception {
-        String token = "";
+        String token = BLANK;
+        String userEmail = BLANK;
         String bearerToken = request.getHeader("Authorization");
         if (StringUtils.isNotEmpty(bearerToken) && bearerToken.startsWith("Bearer ")) {
             token = bearerToken.substring("Bearer ".length());
         }
-        String userEmail = JwtTokenProvider.getUserIdFromJWT(token);
+        try{
+            userEmail = JwtTokenProvider.getUserIdFromJWT(token);
+        }catch (Exception e) {
+            throw new UserException(TOKEN_HAS_PROBLEM);
+        }
         return this.userService.getUserInfo(userEmail);
     }
 
@@ -107,6 +116,12 @@ public class UserController {
     })
     @PostMapping("/authMail")
     public Boolean authMail(@RequestBody UserDto.authEmail dto) throws Exception {
-        return this.emailService.sendAuth(dto);
+        Boolean result;
+        try {
+            result = this.emailService.sendAuth(dto);
+        } catch (Exception e) {
+            throw new UserException(SERVER_ERROR);
+        }
+        return result;
     }
 }

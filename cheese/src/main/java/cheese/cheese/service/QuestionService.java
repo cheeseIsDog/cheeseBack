@@ -1,5 +1,7 @@
 package cheese.cheese.service;
 
+import cheese.cheese.Advice.Exception.QuestionException;
+import cheese.cheese.Advice.Exception.UserException;
 import cheese.cheese.dto.Enum.Consts;
 import cheese.cheese.dto.QuestionDto;
 import cheese.cheese.entity.Question;
@@ -18,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static cheese.cheese.dto.Enum.Consts.*;
+import static cheese.cheese.dto.Enum.ExceptionConsts.EXISTED_NICKNAME;
+import static cheese.cheese.dto.Enum.ExceptionConsts.EXISTED_TITLE;
 
 @Service
 @Slf4j
@@ -29,7 +33,7 @@ public class QuestionService {
     private final QuestionDslRepository questionDslRepository;
     private final IdGenerator idGenerator;
 
-    public Question create(QuestionDto.gen gen) {
+    public Question create(QuestionDto.gen gen) throws Exception {
         Question question = null;
         if (this.isNotExistedQuestionTitle(gen.getTitle(), gen.getSchoolId())) {
             question = gen.toEntity();
@@ -41,7 +45,11 @@ public class QuestionService {
 
     private Boolean isNotExistedQuestionTitle(String title, Long schoolId) {
         Question question = questionRepository.findByTitleAndSchoolId(title, schoolId).orElse(null);
-        return question == null;
+        boolean existed = question != null;
+        if (existed) {
+            throw new QuestionException(EXISTED_TITLE);
+        }
+        return true;
     }
 
     public QuestionDto.res getQuestionById(Long questionId, Long userId) {
