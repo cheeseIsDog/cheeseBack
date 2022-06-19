@@ -117,7 +117,7 @@ public class UserService {
                 .build();
     }
 
-    private Boolean isNotExistedEmail(String email) throws Exception {
+    public Boolean isNotExistedEmail(String email) throws Exception {
         User user = userRepository.findByEmail(email).orElse(null);
         boolean existed = user != null;
         if (existed) {

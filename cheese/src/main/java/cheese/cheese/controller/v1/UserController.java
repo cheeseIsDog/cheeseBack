@@ -105,6 +105,7 @@ public class UserController {
     })
     @PostMapping("/sendMail")
     public Boolean sendMail(@RequestBody UserDto.sendAuth dto) throws Exception {
+        this.userService.isNotExistedEmail(dto.getEmail());
         return this.emailService.sendEmail(dto.getEmail());
     }
 

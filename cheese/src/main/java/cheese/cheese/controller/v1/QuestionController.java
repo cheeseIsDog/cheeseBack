@@ -49,9 +49,9 @@ public class QuestionController {
 
     @PostMapping("/getBySchool")
     public List<QuestionDto.res> getQuestions(@RequestBody QuestionDto.req req) throws Exception {
-        List<QuestionDto.res> result = new ArrayList<>();
+        List<QuestionDto.res> result;
         try {
-            this.questionService.getQuestionsBySchoolId(req);
+            result = this.questionService.getQuestionsBySchoolId(req);
         } catch (Exception e) {
             throw new GlobalException(SERVER_ERROR);
         }
