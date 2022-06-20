@@ -82,6 +82,6 @@ public class EmailService {
             }
         }
 
-        return key.toString();
+        return key.toString().toUpperCase();
     }
 }
