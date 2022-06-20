@@ -59,7 +59,7 @@ public class AnswerDslRepository {
                     )
                     .from(comment)
                     .where(comment.answerId.eq(res.getAnswerId()))
-                    .orderBy(comment.createdDate.desc())
+                    .orderBy(comment.createdDate.asc())
                     .leftJoin(user).on(user.userId.eq(comment.userId))
                     .fetch();
             res.getComments().addAll(commentRes);
