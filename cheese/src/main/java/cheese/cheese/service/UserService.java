@@ -13,6 +13,7 @@ import cheese.cheese.security.JwtTokenProvider;
 import cheese.cheese.security.UserAuthentication;
 import cheese.cheese.util.IdGenerator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import java.util.Optional;
 
 import static cheese.cheese.dto.Enum.ExceptionConsts.*;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -56,11 +58,7 @@ public class UserService {
             throw new UserException(HAS_NO_USER_ID);
         }
 
-        if(!passwordEncoder.encode(loginReq.getPassword()).equals(user.getPassword())){
-            throw new UserException(PASSWORD_IS_NOT_RIGHT);
-        }
-
-        if(!loginReq.getPassword().equals(user.getPassword())){
+        if(!passwordEncoder.matches(loginReq.getPassword(), user.getPassword())){
             throw new UserException(PASSWORD_IS_NOT_RIGHT);
         }
 
