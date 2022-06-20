@@ -38,7 +38,6 @@ public class UserService {
         if (this.isNotExistedEmail(signUpReq.getEmail()) && this.isNotExistedNickName(signUpReq.getNickName())) {
             User user = signUpReq.toEntity();
             user.setPassword(passwordEncoder.encode(user.getPassword()));
-            user.setPassword(user.getPassword());
             user.setUserId(idGenerator.getNewId());
             userRepository.save(user);
             result = true;
