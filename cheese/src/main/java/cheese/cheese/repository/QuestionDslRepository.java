@@ -38,7 +38,47 @@ public class QuestionDslRepository {
                 .from(question)
                 .where(question.schoolId.eq(schoolId))
                 .orderBy(question.createdDate.desc())
-                .offset(req.getOffset())
+                .offset(req.getOffset()*req.getLimit())
+                .limit(req.getLimit())
+                .leftJoin(user).on(user.userId.eq(question.userId))
+                .fetch();
+
+        return this.makeTagsForQuestions(result);
+    }
+
+    public List<QuestionDto.res> getCheckedQuestionsWithTag(QuestionDto.req req) {
+        Long schoolId = req.getSchoolId();
+        List<QuestionDto.res> result = this.jpaQueryFactory.select(
+                Projections.constructor(
+                        QuestionDto.res.class,
+                        question,
+                        user
+                )
+        )
+                .from(question)
+                .where(question.schoolId.eq(schoolId).and(question.solved_YN.eq(YN.Yes)))
+                .orderBy(question.createdDate.desc())
+                .offset(req.getOffset()*req.getLimit())
+                .limit(req.getLimit())
+                .leftJoin(user).on(user.userId.eq(question.userId))
+                .fetch();
+
+        return this.makeTagsForQuestions(result);
+    }
+
+    public List<QuestionDto.res> getUnCheckedQuestionsWithTag(QuestionDto.req req) {
+        Long schoolId = req.getSchoolId();
+        List<QuestionDto.res> result = this.jpaQueryFactory.select(
+                Projections.constructor(
+                        QuestionDto.res.class,
+                        question,
+                        user
+                )
+        )
+                .from(question)
+                .where(question.schoolId.eq(schoolId).and(question.solved_YN.eq(YN.No)))
+                .orderBy(question.createdDate.desc())
+                .offset(req.getOffset()*req.getLimit())
                 .limit(req.getLimit())
                 .leftJoin(user).on(user.userId.eq(question.userId))
                 .fetch();
@@ -60,7 +100,7 @@ public class QuestionDslRepository {
                         .and(question.title.contains(req.getTitle()))
                 )
                 .orderBy(question.createdDate.desc())
-                .offset(req.getOffset())
+                .offset(req.getOffset()*req.getLimit())
                 .limit(req.getLimit())
                 .leftJoin(user).on(user.userId.eq(question.userId))
                 .fetch();
@@ -92,7 +132,7 @@ public class QuestionDslRepository {
         return this.getQuestionLikeDislike(result);
     }
 
-    private List<QuestionDto.res> getQuestion(Long questionId) {
+    private List<QuestionDto.res> getQuestion(Long questionId)  {
         List<QuestionDto.res> result = this.jpaQueryFactory.select(
                         Projections.constructor(
                                 QuestionDto.res.class,

@@ -58,6 +58,42 @@ public class QuestionController {
         return result;
     }
 
+    @Operation(summary = "get Checked Questions", description = "학교 내 채택된 질문 쿼리")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
+            @ApiResponse(responseCode = "404", description = "Not Found !!")
+    })
+
+    @PostMapping("/getCheckedBySchool")
+    public List<QuestionDto.res> getCheckedQuestions(@RequestBody QuestionDto.req req) throws Exception {
+        List<QuestionDto.res> result;
+        try {
+            result = this.questionService.getCheckedQuestionsBySchoolId(req);
+        } catch (Exception e) {
+            throw new GlobalException(SERVER_ERROR);
+        }
+        return result;
+    }
+
+    @Operation(summary = "get UnChecked Questions", description = "학교 내 채택된 질문 쿼리")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
+            @ApiResponse(responseCode = "404", description = "Not Found !!")
+    })
+
+    @PostMapping("/getUnCheckedBySchool")
+    public List<QuestionDto.res> getUnCheckedQuestions(@RequestBody QuestionDto.req req) throws Exception {
+        List<QuestionDto.res> result;
+        try {
+            result = this.questionService.getUnCheckedQuestionsBySchoolId(req);
+        } catch (Exception e) {
+            throw new GlobalException(SERVER_ERROR);
+        }
+        return result;
+    }
+
     @Operation(summary = "get Question", description = "학교 내 특정 질문 쿼리")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),

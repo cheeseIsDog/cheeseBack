@@ -72,6 +72,18 @@ public class QuestionService {
         return result;
     }
 
+    public List<QuestionDto.res> getCheckedQuestionsBySchoolId(QuestionDto.req req) {
+        List<QuestionDto.res> result = this.questionDslRepository.getCheckedQuestionsWithTag(req);
+        result.forEach(res -> this.checkUserLikeDisLikeAction(res, res.getQuestionId(), req.getUserId()));
+        return result;
+    }
+
+    public List<QuestionDto.res> getUnCheckedQuestionsBySchoolId(QuestionDto.req req) {
+        List<QuestionDto.res> result = this.questionDslRepository.getUnCheckedQuestionsWithTag(req);
+        result.forEach(res -> this.checkUserLikeDisLikeAction(res, res.getQuestionId(), req.getUserId()));
+        return result;
+    }
+
     public List<QuestionDto.res> searchQuestionsByTitle(QuestionDto.searchReqByTitle req) {
         if ( Consts.BLANK.equals(req.getTitle()) ) {
             return new ArrayList<>();
