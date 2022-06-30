@@ -89,15 +89,61 @@ public class QuestionDslRepository {
     public List<QuestionDto.res> searchQuestionsByTitle(QuestionDto.searchReqByTitle req) {
         Long schoolId = req.getSchoolId();
         List<QuestionDto.res> result = this.jpaQueryFactory.select(
-                        Projections.constructor(
-                                QuestionDto.res.class,
-                                question,
-                                user
-                        )
+                Projections.constructor(
+                        QuestionDto.res.class,
+                        question,
+                        user
                 )
+        )
                 .from(question)
                 .where(question.schoolId.eq(schoolId)
                         .and(question.title.contains(req.getTitle()))
+                )
+                .orderBy(question.createdDate.desc())
+                .offset(req.getOffset()*req.getLimit())
+                .limit(req.getLimit())
+                .leftJoin(user).on(user.userId.eq(question.userId))
+                .fetch();
+
+        return this.makeTagsForQuestions(result);
+    }
+
+    public List<QuestionDto.res> searchCheckedQuestionsByTitle(QuestionDto.searchReqByTitle req) {
+        Long schoolId = req.getSchoolId();
+        List<QuestionDto.res> result = this.jpaQueryFactory.select(
+                Projections.constructor(
+                        QuestionDto.res.class,
+                        question,
+                        user
+                )
+        )
+                .from(question)
+                .where(question.schoolId.eq(schoolId)
+                        .and(question.title.contains(req.getTitle()))
+                        .and(question.solved_YN.eq(YN.Yes))
+                )
+                .orderBy(question.createdDate.desc())
+                .offset(req.getOffset()*req.getLimit())
+                .limit(req.getLimit())
+                .leftJoin(user).on(user.userId.eq(question.userId))
+                .fetch();
+
+        return this.makeTagsForQuestions(result);
+    }
+
+    public List<QuestionDto.res> searchUnCheckedQuestionsByTitle(QuestionDto.searchReqByTitle req) {
+        Long schoolId = req.getSchoolId();
+        List<QuestionDto.res> result = this.jpaQueryFactory.select(
+                Projections.constructor(
+                        QuestionDto.res.class,
+                        question,
+                        user
+                )
+        )
+                .from(question)
+                .where(question.schoolId.eq(schoolId)
+                        .and(question.title.contains(req.getTitle()))
+                        .and(question.solved_YN.eq(YN.No))
                 )
                 .orderBy(question.createdDate.desc())
                 .offset(req.getOffset()*req.getLimit())
@@ -116,12 +162,13 @@ public class QuestionDslRepository {
                         tagWord.tagWordId.eq(tagMaster.tagWordId)
                         .and(tagWord.tagName.contains(req.getTagName()))
                 )
+                .orderBy(tagWord.createdDate.desc())
                 .fetch();
 
         List<Long> targetQuestions = new ArrayList<>();
         List<QuestionDto.res> result = new ArrayList<>();
         tagMasters.forEach(tagMaster -> {
-            if ( !targetQuestions.contains(tagMaster.getQuestionId()) ) {
+            if ( !targetQuestions.contains(tagMaster.getQuestionId())) {
                 targetQuestions.add(tagMaster.getQuestionId());
             }
         });

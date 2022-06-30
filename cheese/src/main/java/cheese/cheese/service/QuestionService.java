@@ -3,6 +3,7 @@ package cheese.cheese.service;
 import cheese.cheese.Advice.Exception.QuestionException;
 import cheese.cheese.Advice.Exception.UserException;
 import cheese.cheese.dto.Enum.Consts;
+import cheese.cheese.dto.Enum.YN;
 import cheese.cheese.dto.QuestionDto;
 import cheese.cheese.entity.Question;
 import cheese.cheese.entity.QuestionLikeDislike;
@@ -93,10 +94,63 @@ public class QuestionService {
         return result;
     }
 
+    public List<QuestionDto.res> searchCheckedQuestionsByTitle(QuestionDto.searchReqByTitle req) {
+        if ( Consts.BLANK.equals(req.getTitle()) ) {
+            return new ArrayList<>();
+        }
+        List<QuestionDto.res> result = questionDslRepository.searchCheckedQuestionsByTitle(req);
+        result.forEach(res -> this.checkUserLikeDisLikeAction(res, res.getQuestionId(), req.getUserId()));
+        return result;
+    }
+
+    public List<QuestionDto.res> searchUnCheckedQuestionsByTitle(QuestionDto.searchReqByTitle req) {
+        if ( Consts.BLANK.equals(req.getTitle()) ) {
+            return new ArrayList<>();
+        }
+        List<QuestionDto.res> result = questionDslRepository.searchUnCheckedQuestionsByTitle(req);
+        result.forEach(res -> this.checkUserLikeDisLikeAction(res, res.getQuestionId(), req.getUserId()));
+        return result;
+    }
+
     public List<QuestionDto.res> searchQuestionsByTag(QuestionDto.searchReqByTag req) {
         if ( Consts.BLANK.equals(req.getTagName()) ) {
             return new ArrayList<>();
-        }        List<QuestionDto.res> result = questionDslRepository.searchQuestionsByTag(req);
+        }
+        List<QuestionDto.res> result = new ArrayList<>();
+        List<QuestionDto.res> temp = questionDslRepository.searchQuestionsByTag(req);
+        for (int i = req.getOffset().intValue(); result.size() < req.getLimit().intValue(); i++) {
+            result.add(temp.get(i));
+        }
+        result.forEach(res -> this.checkUserLikeDisLikeAction(res, res.getQuestionId(), req.getUserId()));
+        return result;
+    }
+
+    public List<QuestionDto.res> searchCheckedQuestionsByTag(QuestionDto.searchReqByTag req) {
+        if ( Consts.BLANK.equals(req.getTagName()) ) {
+            return new ArrayList<>();
+        }
+        List<QuestionDto.res> result = new ArrayList<>();
+        List<QuestionDto.res> temp = questionDslRepository.searchQuestionsByTag(req);
+        for (int i = req.getOffset().intValue(); result.size() < req.getLimit().intValue(); i++) {
+            if (temp.get(i).getSolved_YN().equals(YN.Yes)) {
+                result.add(temp.get(i));
+            }
+        }
+        result.forEach(res -> this.checkUserLikeDisLikeAction(res, res.getQuestionId(), req.getUserId()));
+        return result;
+    }
+
+    public List<QuestionDto.res> searchUnCheckedQuestionsByTag(QuestionDto.searchReqByTag req) {
+        if ( Consts.BLANK.equals(req.getTagName()) ) {
+            return new ArrayList<>();
+        }
+        List<QuestionDto.res> result = new ArrayList<>();
+        List<QuestionDto.res> temp = questionDslRepository.searchQuestionsByTag(req);
+        for (int i = req.getOffset().intValue(); result.size() < req.getLimit().intValue(); i++) {
+            if (temp.get(i).getSolved_YN().equals(YN.No)) {
+                result.add(temp.get(i));
+            }
+        }
         result.forEach(res -> this.checkUserLikeDisLikeAction(res, res.getQuestionId(), req.getUserId()));
         return result;
     }
