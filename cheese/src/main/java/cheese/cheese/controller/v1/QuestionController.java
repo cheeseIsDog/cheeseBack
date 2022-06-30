@@ -160,6 +160,30 @@ public class QuestionController {
         return this.questionService.searchQuestionsByTag(req);
     }
 
+    @Operation(summary = "search Checked Question By Tag", description = "학교 내 질문을 태그로 검색")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
+            @ApiResponse(responseCode = "404", description = "Not Found !!")
+    })
+
+    @PostMapping("/searchCheckedQuestionsByTag")
+    public List<QuestionDto.res> searchCheckedQuestionsByTag(@RequestBody QuestionDto.searchReqByTag req) throws Exception {
+        return this.questionService.searchCheckedQuestionsByTag(req);
+    }
+
+    @Operation(summary = "search UnChecked Question By Tag", description = "학교 내 질문을 태그로 검색")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "OK !!"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error !!"),
+            @ApiResponse(responseCode = "404", description = "Not Found !!")
+    })
+
+    @PostMapping("/searchUnCheckedQuestionsByTag")
+    public List<QuestionDto.res> searchUnCheckedQuestionsByTag(@RequestBody QuestionDto.searchReqByTag req) throws Exception {
+        return this.questionService.searchUnCheckedQuestionsByTag(req);
+    }
+
     @Operation(summary = "get user's questions info", description = "유저의 질문 관련 정보 쿼리")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "OK !!"),
