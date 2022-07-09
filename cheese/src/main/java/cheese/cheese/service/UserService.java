@@ -129,6 +129,15 @@ public class UserService {
         if (existed) {
             throw new UserException(EXISTED_NICKNAME);
         }
+        if (nickName.contains("master") ||
+                nickName.contains("MASTER") ||
+                nickName.contains("마스터") ||
+                nickName.contains("운영자") ||
+                nickName.contains("manager") ||
+                nickName.contains("MANAGER")
+                ) {
+            throw new UserException(EXISTED_NICKNAME);
+        }
         return true;
     }
 
